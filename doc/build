@@ -1,0 +1,21 @@
+cd /app/webchat/chatapp/utils
+cython --embed -o whatsapp.c whatsapp.py
+cython --embed -o facebook.c facebook.py
+gcc -shared -fPIC -Os -I /usr/include/python2.7 -o whatsapp.so whatsapp.c
+gcc -shared -fPIC -Os -I /usr/include/python2.7 -o facebook.so facebook.c
+rm whatsapp.py facebook.py whatsapp.pyc facebook.pyc whatsapp.c facebook.c
+
+cd /app/webchat/chatapp/management/commands/
+cython --embed -o whatsapp.c whatsapp.py
+cython --embed -o facebook.c facebook.py
+gcc -shared -fPIC -Os -I /usr/include/python2.7 -o whatsapp.so whatsapp.c
+gcc -shared -fPIC -Os -I /usr/include/python2.7 -o facebook.so facebook.c
+rm whatsapp.py facebook.py whatsapp.pyc facebook.pyc whatsapp.c facebook.c
+cd /app/webchat
+
+cd /app/webchat/chatapp/
+cython --embed -o views.c views.py
+gcc -shared -fPIC -Os -I /usr/include/python2.7 -o views.so views.c
+rm views.py views.pyc views.c
+cd /app/webchat
+

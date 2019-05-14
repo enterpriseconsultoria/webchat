@@ -1,0 +1,76 @@
+<head>
+
+  {% load staticfiles %}
+  <link href="{% static 'others/css/bootstrap.min.css' %}" rel="stylesheet">
+  <style type="text/css">
+    #msg{
+      display: none;
+    }
+    #erro{
+      display: none;
+    }
+    #qr{
+      display: none;
+      width: 100%;
+      max-width: 512px;
+    }
+    p{
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <p></p>
+  <p><img id="qr" src="/media/qr{{ sourceid }}.png"></p>
+  <p id="msg">O Whatsapp já está em execução.</p>
+  <p id="erro">O Serviço não está sendo executado.<br><a href="/chat/service/start/{{ sourceid }}" target="_blank" rel="noopener">Iniciar o Serviço</a></p>
+  <p id="loading">Carregando...</p>
+  {{ wellcome }}
+  <script src="{% static 'others/js/jquery.min.js' %}" type="text/javascript"></script>
+  <script>
+
+    $(document).ready(function(){
+      reloadimg = function(){
+        console.log("Recarregando");
+        var jqxhr = $.post( "/chat/qrcode/{{ sourceid }}", function(data) {
+          console.log(data)
+          $("#erro").hide();
+          var date = new Date();
+          $("#qr").attr("src", "/media/qr{{ sourceid }}.png?"+date.getTime());
+        })
+        .fail(function() {
+          $("#erro").show();
+          $("#msg").hide();
+          $("#loading").hide();
+          $("#qr").hide();
+        })
+        .always(function(data) {
+        });
+
+      };
+      
+      $("#qr").on("load", function(){
+        $("#loading").hide();
+        $("#msg").hide();
+        $("#qr").show();
+      });
+      $("#qr").on("error", function(){
+        $("#loading").hide();
+        $("#msg").show();
+        $("#qr").hide();        
+      });
+
+      $("a").on("click", function(e){
+        e.preventDefault();
+        var jqxhr = $.get($(this).attr("href"))
+        .always(function(data) {
+          alert(data)
+        });
+
+        return false;
+      });
+
+      setInterval(reloadimg, 5000);
+    });
+  </script>
+</body>

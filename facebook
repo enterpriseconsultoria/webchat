@@ -1,0 +1,3 @@
+#!/bin/bash
+cd /opt/webchat/app
+/opt/webchat/python/bin/python manage.pyc whatsapp

@@ -1,0 +1,13 @@
+[Unit]
+Description=Webchat Robo %i
+AssertPathExists=/opt/webchat/app/doc/webchat/
+
+[Service]
+Type=simple
+ExecStart=/opt/webchat/app/doc/webchat/webchat >> /var/log/robo_$i
+Nice=5
+
+[Install]
+WantedBy=multi-user.target
+
+

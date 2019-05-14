@@ -1,0 +1,61 @@
+[
+   {
+      "model":"chatapp.menu",
+      "pk":1,
+      "fields":{
+         "description":"Menu Principal",
+         "message":"Bem vindo ao \r\n1 - Suporte\r\n2 - Financeiro\r\n3 - Vendas",
+         "retry":10,
+         "invalid_option_message":"Op\u00e7\u00e3o inv\u00e1lida, favor informar as op\u00e7\u00f5es abaixo.",
+         "default":true
+      }
+   },
+   {
+      "model":"chatapp.menu",
+      "pk":2,
+      "fields":{
+         "description":"Menu Suporte",
+         "message":"Menu Suporte\r\n1 - Sem acesso\r\n2 - Acesso lento\r\n3 - Problema na abertura de algumas p\u00e1ginas\r\n9 - Encerrar atendimento\r\n0 - Retornar ao menu anterior\r\n# - Falar com atendente.",
+         "message_alt":"Menu Suporte\r\n1 - Sem acesso\r\n2 - Acesso lento\r\n3 - Problema na abertura de algumas p\u00e1ginas\r\n9 - Encerrar atendimento\r\n0 - Retornar ao menu anterior\r",
+         "retry":10,
+         "invalid_option_message":"Op\u00e7\u00e3o inv\u00e1lida, favor digitar uma das op\u00e7\u00f5es abaixo.",
+         "default":false
+      }
+   },
+   {
+      "model":"chatapp.menu",
+      "pk":3,
+      "fields":{
+         "description":"Menu Financeiro",
+         "message":"1 - 2\u00aa via do boleto\r\n2 - Promessa de pagamento\r\n3 - Altera\u00e7\u00e3o de vencimento\r\n0 - Retornar menu anterior\r\n9 - Encerrar atendimento\r\n# - Falar com atendente",
+         "message_alt":"1 - 2\u00aa via do boleto\r\n2 - Promessa de pagamento\r\n3 - Altera\u00e7\u00e3o de vencimento\r\n0 - Retornar menu anterior\r\n9 - Encerrar atendimento",
+         "retry":10,
+         "invalid_option_message":"Op\u00e7\u00e3o inv\u00e1lida. Favor informar uma das op\u00e7\u00f5es abaixo.",
+         "default":false
+      }
+   },
+   {
+      "model":"chatapp.menu",
+      "pk":4,
+      "fields":{
+         "description":"Identificacao Cliente",
+         "message":"Seja bem-vindo ao . \r\nDigite CPF/CNPJ do assinante.\r\n\r\nSe n\u00e3o for cliente,\r\nDigite 0 para falar com um dos nossos atendentes.\r\nDigite 2 para consultar nossos planos.",
+         "message_alt":"Seja bem-vindo ao . \r\nDigite CPF/CNPJ do assinante.\r\nDigite 2 para consultar nossos planos.\r\nNo momento, estamos fora do horário de atendimento",
+         "retry":10,
+         "invalid_option_message":"",
+         "default":true
+      }
+   },
+   {
+      "model":"chatapp.menu",
+      "pk":5,
+      "fields":{
+         "description":"Menu Vendas",
+         "message":"1 - Planos\r\n0 - Retornar menu anterior\r\n# - Falar com atendente.",
+         "message_alt":"1 - Planos\r\n0 - Retornar menu anterior.",
+         "retry":10,
+         "invalid_option_message":"",
+         "default":false
+      }
+   }
+]

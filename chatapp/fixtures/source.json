@@ -1,0 +1,1 @@
+[{"model": "chatapp.source", "pk": 1, "fields": {"ctype": "whatsapp", "name": "WhatsApp Chat", "username": null, "password": null, "active": true}}]

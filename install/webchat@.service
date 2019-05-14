@@ -1,0 +1,11 @@
+[Unit]
+Description=Webchat Robo %i
+AssertPathExists=/usr/local/webchat/bin/whatsapp
+
+[Service]
+Type=simple
+ExecStart=/usr/local/webchat/bin/whatsapp --data %i >> /var/log/webchat_%i
+Nice=5
+
+[Install]
+WantedBy=multi-user.target

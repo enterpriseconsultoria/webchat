@@ -1,0 +1,25 @@
+{% for message in messages %}
+  {% if message.user %}
+        <div class="mensagem sent">
+          <div class="orelha"></div>
+          <div class="conteudo">{% if message.chat.contact.isgroup %}<b class="user">{{message.user}}</b><br/>{% endif %}{% if message.message_media %}{{ message.message_media|safe }}{% else %}{{message.message_chat_html|escape}}{% endif %}
+          <div class="status">{{message.created|date:"H:i:s"}}</div>
+          </div>
+        </div>
+  {% else %}
+    {% if message.display_call %}
+        <div class="call_log">
+          <span>
+          {{message.display_call}}
+          </span>
+        </div>
+    {% else %}
+        <div class="mensagem">
+          <div class="orelha"></div>
+          <div class="conteudo">{% if message.chat.contact.isgroup %}<b class="user">{% if message.contact %}{{message.contact}}{% else %}{{message.chat.contact}}{% endif %}</b><br/>{% endif %}{% if message.message_media %}{{ message.message_media|safe }}{% else %}{% if message.message_location %}Latitude: {{ message.latitude}} <br/> Longitude: {{message.longitude}} <br/>{{ message.message_location|safe }}{% else %}{{message.message_chat_html|escape}}{% endif %}{% endif %}
+          <div class="status">{{message.created|date:"H:i:s"}}</div>
+          </div>
+        </div>
+    {% endif %}
+  {% endif %}
+{% endfor %}

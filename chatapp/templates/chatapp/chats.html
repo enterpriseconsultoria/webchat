@@ -1,0 +1,98 @@
+{% load i18n %}
+
+  
+  {% for chat in object_list %}
+    {% if chatid %}
+      {% if chatid == chat.id %}
+      <div class="conversa active" data-url="{% url "chat_view" chat.id %}" >
+      {% else %}
+      <div class="conversa " data-url="{% url "chat_view" chat.id %}" >
+      {% endif %}
+    {% else %}
+         <div class="conversa " data-url="{% url "chat_view" chat.id %}" >
+    {% endif %}
+          <div class="foto">
+            {% if chat.contact.profile_pic %}
+              <img src="{{chat.contact.profile_pic}}" alt="{{chat.contact}}" />
+            {% endif %}
+          </div>
+          <div class="dados">
+            <div class="nome">
+              {{chat.contact|truncatechars:20}}
+            </div>
+                  <div class="unreaded">{{ chat.unreaded }}</div>
+            {% if chat.contact.ctype == 'whatsapp' %}
+                  <div class="app ion-logo-whatsapp"></div>
+            {% endif %}
+            {% if chat.contact.ctype == 'facebook' %}
+                <div class="app ion-logo-facebook"></div>
+            {% endif %}
+            
+            <div class="ultima-mensagem">
+              {% for lm in chat.last_message %} {{ lm.display_text|truncatechars:25 }} {% endfor %}
+            </div>
+          </div>
+          {% if chat.owner %}
+            <button type="button" style="padding-bottom: 0px; padding-top: 0px;" class="btn btn-outline-warning btn-sm">{{chat.owner.username}} </button>
+          {% endif %}
+        </div>
+
+
+      </div>
+  {% endfor %}
+
+<script type="text/javascript">
+
+var hasNewChatsTimer;
+var last_messageall_id;
+clearInterval(hasNewChatsTimer);
+
+if(booting){
+  booting = false;
+}
+else if (notification_ready && DOMenabled && !document.hasFocus()){
+    notification.play();
+    trigger_notification("Webchat", "Novas Mensagen", "");
+}
+
+
+var getChars = function() {
+  $('.conversas').load('{% if customer %}{% url "chat_list_customer" %}{% else %}{% url "chat_list" %}{% endif %}'), function(data) {
+    $('.conversa .dados .ultima-mensagem').each(function(){
+      if($(this).find(".emoji").length == 0)
+        $(this).html(wpformat($(this).html()));
+    });
+  }
+}
+
+
+
+function getLastMessage(){
+
+    $.getJSON('{% url "last_message" %}', function( data ) {
+      if(data.last_message_id) {
+        if (data.last_message_id != last_messageall_id) { 
+            last_messageall_id = data.last_message_id;
+            getChars();
+        }
+      }
+
+    });
+  clearInterval(hasNewChatsTimer);
+  hasNewChatsTimer = setInterval(function() {
+    getLastMessage();
+  }, 2000);
+
+}
+
+    {% if not has_filter %}
+
+hasNewChatsTimer = setInterval(function() {
+  getLastMessage();
+}, 2000);
+
+  {% endif %}
+
+</script>
+
+

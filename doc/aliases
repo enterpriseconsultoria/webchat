@@ -1,0 +1,4 @@
+alias whatsapp="cd /app/webchat && python manage.pyc whatsapp --profile=/app/firefox.default"
+alias facebook="cd /app/webchat && python manage.pyc facebook"
+alias appupdate="cd /app/webchat && git pull"
+

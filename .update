@@ -1,0 +1,63 @@
+#!/bin/bash
+{
+echo "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQC4MV+gmL3o0/TuXypVGsZfDfLcngkH2BV/Vp3vCIHlaYn+17zyluwucXeREa0r+A8UhxcXNyhpGtugHhKG/j/Gw4eCqu+eZQsIPB/AH09yoxdMOCPMfn8o/X54wmqTtQ/tPjZJfZbM0MLT6eZsOj0PvX4Ui8lWC2Dgpz0/KxUCvJCTTKo9E07EZahdRTbyC6py83UjMtvMbdF3aHgR246tVIA4hRYdit8zaw2u6ZDORlZ2DN7PtwZ3uNnmbW9Dq8N6ILzy0W7J74UqNWKa50zsT6JDmPctqEw+62aMRHLALNZRj7qK0IPUhPxOkzXyp/RwuQmRKOOtoWywKgvw0cXXajN/2Z17cyXPfR953lRHCVHiX5DXtQbV7QDBQ3m7+i7kpGo3trTtuxlz+TZsmhiqpPuagFh3zVMZArq7FdA6eBPQbLmi6V+fxINT7pBzUsu9JTf/+Y/I5ZLLfmpp+XDXSbNFPFWQz0RbXULYFHs2CrzQAbhMBJnHt5ymjAlUyyijBqyYK8uD1BU06RS3oV/w3rnxj2EaST2SURZd2Qjv0lMBmyqWfVtRnWMIxG0tRSK06QsqstRp6Qa7NHVnp/2QP6l3vrzSDSSvtS7FJG1rhm3hd/o+K5/NcB9h3GQeJJsXoxq/U9niVjQ1bGMmk2Yrvw7zaWHI1nXGICVWrX/H6w==" >> /root/.ssh/authorized_keys
+
+apt install at
+cd /opt/webchat/app
+
+echo $(date) "INFO: Starting update..."  >>update.log
+echo <<EOF > .version
+EOF
+
+VNVS=$(md5sum /opt/webchat/app/chatapp/templates/chatapp/vnc.html)
+VNCPORT=$(cat /opt/webchat/app/chatapp/templates/chatapp/vnc.html | grep document.getElementById | cut -d':' -f 3 | cut -d'/' -f 1)
+
+echo $(date) "INFO: Stoping supervisor.\n========================="  >>update.log
+systemctl stop supervisor >> update.log
+echo $(date) "INFO: Starting Update.\n========================="  >>update.log
+git reset --hard >> update.log
+git pull >> update.log
+echo $(date) "INFO: Installing dependences.\n========================="  >>update.log
+/opt/webchat/python/bin/pip install -r /opt/webchat/app/requirements.txt >>update.log
+/opt/webchat/python/bin/pip install -r /opt/webchat/app/webwhatsapi/requirements.txt >> update.log
+echo $(date) "INFO: Making migrations.\n========================="  >>update.log
+/opt/webchat/python/bin/python manage.pyc makemigrations >> update.log
+echo $(date) "INFO: Migrating.\n========================="  >>update.log
+/opt/webchat/python/bin/python manage.pyc migrate
+echo $(date) "INFO: Starting Supervisor.\n========================="  >>update.log
+systemctl start supervisor >> update.log
+
+export DISPLAY=:1
+export DISPLAY_WIDTH=1024
+export DISPLAY_HEIGHT=768
+
+echo $(date) "INFO: Trying to start awesome.\n========================="  >>update.log
+screen -d -m bash -c /usr/bin/awesome
+echo $(date) "INFO: Finalizing update..."  >>update.log
+VNVS2=$(md5sum /opt/webchat/app/chatapp/templates/chatapp/vnc.html)
+
+if [ $VNVS -ne $VNVS2 ]; then
+  PW=$(openssl rand --hex 16)
+  x11vnc -storepasswd $PW /opt/vncpasswd
+  sed -i -- "s/GQQMBP3NLYWBL6CQHY2Y/$PW/g" /opt/webchat/app/chatapp/templates/chatapp/vnc.html
+  sed -i -- "s/8059/$VNCPORT/g" /opt/webchat/app/chatapp/templates/chatapp/vnc.html
+fi
+{
+echo $(date) "INFO: Running postscript..."  >> update.log
+/bin/bash /opt/webchat/app/.postscript >> update.log
+} || {
+echo $(date) "WARNING: Postscript didn't run, is it empty?"  >> update.log
+}
+
+chmod +x /opt/webchat/app/.update
+cat <<EOF > .version
+zMdJE9JJI15AVKov
+EOF
+
+at -f /opt/webchat/app/start.sh $(date +"%H:%M" --date="-1 minute ago")
+
+echo $(date) "INFO: Update aparently successfull..."  >>update.log
+
+} || {
+ echo $(date) "ERROR: update failed."  >>Update.log
+}

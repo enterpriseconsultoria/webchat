@@ -1,0 +1,171 @@
+{% load i18n %}
+<div class="opts" style="display: none;">
+  {% if chat.owner %}
+  <button type="button" style="padding-bottom: 0px; padding-top: 0px;" class="btn btn-outline-info btn-sm">{{chat.owner.username}} </button>
+  {% endif %}
+  {% if not chat.owner %} 
+   <button type="button" class="btn btn-outline-success btn-sm" onclick="chatAction('{% url "chat_start" chat.id %}');">{% trans "Iniciar atendimento" %}</button>
+   {% endif %}
+
+      {% if user.is_superuser and chat.owner %}
+            <button type="button" class="btn btn-outline-danger btn-sm" onclick="chatAction('{% url "chat_stop" chat.id %}');">{% trans "Finalizar atendimento" %}</button>
+      {% else %}
+
+      {% if chat.owner == user %}
+      <button type="button" class="btn btn-outline-danger btn-sm" onclick="chatAction('{% url "chat_stop" chat.id %}');">{% trans "Finalizar atendimento" %}</button>
+    {% endif %}
+  {% endif %}
+
+  
+    {% if chat.owner == user or user.is_superuser %}
+      <div class="dropdown" style="float: right;">
+        <button type="button" class="btn btn-outline-primary btn-sm" id="dropdownMenuButton" data-toggle="dropdown">{% trans "Transferir Usuário" %}</button>
+          <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+            {% for u in users %}        
+            <a class="dropdown-item" href="#" onclick="chatAction('{% url "chat_owner_set" chat.id u.id %}');">{{u.username}}</a>
+            {% endfor %}           
+          </div>
+      </div>
+    {% endif %}
+    {% if not chat.owner %}
+      <div class="dropdown" style="float: right;">
+        <button type="button" class="btn btn-outline-info btn-sm" id="dropdownMenuButton" data-toggle="dropdown">{% trans "Transferir Grupo" %}</button>
+          <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+            {% for g in groups %}        
+            <a class="dropdown-item" href="#" onclick="chatAction('{% url "chat_group_set" chat.id g.id %}');">{{g.name}}</a>
+            {% endfor %}           
+          </div>
+      </div>
+    {% endif %}
+
+</div>
+
+
+<div class="msgs">
+  
+</div>
+
+
+<script >
+$('#usermsg').focus();
+
+$("#profile-img").click(function() {
+  $("#status-options").toggleClass("active");
+});
+
+$(".expand-button").click(function() {
+  $("#profile").toggleClass("expanded");
+  $("#contacts").toggleClass("expanded");
+});
+
+$("#status-options ul li").click(function() {
+  $("#profile-img").removeClass();
+  $("#status-online").removeClass("active");
+  $("#status-away").removeClass("active");
+  $("#status-busy").removeClass("active");
+  $("#status-offline").removeClass("active");
+  $(this).addClass("active");
+  
+  if($("#status-online").hasClass("active")) {
+    $("#profile-img").addClass("online");
+  } else if ($("#status-away").hasClass("active")) {
+    $("#profile-img").addClass("away");
+  } else if ($("#status-busy").hasClass("active")) {
+    $("#profile-img").addClass("busy");
+  } else if ($("#status-offline").hasClass("active")) {
+    $("#profile-img").addClass("offline");
+  } else {
+    $("#profile-img").removeClass();
+  };
+  
+  $("#status-options").removeClass("active");
+});
+
+var last_message_id;
+var hasNewMessagesTimer;
+
+{% if last_message_id %}
+last_message_id='{{last_message_id}}';
+{% endif %}
+
+$.get('{% url "chat_messages" chat.id %}',function(data,status){
+  $(data).appendTo($('.msgs'));
+});
+
+clearInterval(hasNewMessagesTimer);
+
+function chatAction(url) { 
+      $.getJSON(url, function( data ) {
+        alert(data.message);
+        window.location.reload();
+    });
+}
+
+function getMessages(){
+  if (last_message_id != null) { 
+    $.getJSON('{% url "chat_has_new_message" chat.id %}/?messageid='+last_message_id, function( data ) {
+      if(data.has_new_message) {
+        last_message_id = data.last_message_id;
+        $.get('{% url "chat_messages" chat.id %}/?messageid='+last_message_id,function(m,status){
+          $(m).appendTo($('.msgs'));
+          $(".messages").animate({ scrollTop: 20000 }, "fast");
+        });
+      }
+
+    });
+  }
+  clearInterval(hasNewMessagesTimer);
+  hasNewMessagesTimer = setInterval(function() {
+    getMessages();
+  }, 2000);
+
+}
+
+//// refresh chat
+hasNewMessagesTimer = setInterval(function() {
+  getMessages();
+}, 2000);
+
+
+
+newMessage = function(message) {
+  var dataform = $("#messageform").serialize();
+  $.post('{% url "chat_message_add" chat.id %}', dataform,function(data,status){
+    last_message_id = data.messageid;
+    $.get('{% url "chat_messages" chat.id %}?messageid='+data.messageid,function(d,status){
+      $(d).appendTo($('.msgs'));
+    });
+  });
+
+  if (!document.hasFocus()) {
+      trigger_notification($('.conversa.selecionada .dados .nome').html(), message, $('.conversa.selecionada .foto img').attr("src"));
+   }
+  $('.conversa.selecionada .dados .ultima-mensagem').html('<b>Você: </b>' +wpformat(message));
+  $(".messages").animate({ scrollTop: 20000*20000 }, "fast");
+};
+
+
+{% if not chat.owner %}
+
+  $("#mensagem-input").addClass("disabled");
+  distroyUploader();
+
+{% else %}
+  {% if chat.owner == user %}
+      $("#mensagem-input").removeClass("disabled");
+      createUploader('{% csrf_token %}');
+    {% else %}
+      $("#mensagem-input").addClass("disabled");
+      distroyUploader();
+    {% endif %}
+
+  {% endif %}
+
+</script>
+
+
+
+
+
+
+

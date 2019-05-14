@@ -1,0 +1,47 @@
+[
+   {
+      "model":"chatapp.script",
+      "pk":1,
+      "fields":{
+         "description":"Consulta Cliente",
+         "script_file":"/scripts/sgp-consulta.py",
+         "active":true
+      }
+   },
+   {
+      "model":"chatapp.script",
+      "pk":2,
+      "fields":{
+         "description":"2via boleto",
+         "script_file":"/scripts/sgp-2via.py",
+         "active":true
+      }
+   },
+   {
+      "model":"chatapp.script",
+      "pk":3,
+      "fields":{
+         "description":"Chamado",
+         "script_file":"/scripts/sgp-chamado.py",
+         "active":true
+      }
+   },
+   {
+      "model":"chatapp.script",
+      "pk":4,
+      "fields":{
+         "description":"Liberação",
+         "script_file":"/scripts/sgp-liberacao.py",
+         "active":true
+      }
+   },
+   {
+      "model":"chatapp.script",
+      "pk":5,
+      "fields":{
+         "description":"Verificar Acesso",
+         "script_file":"/scripts/sgp-verificaracesso.py",
+         "active":true
+      }
+   }
+]

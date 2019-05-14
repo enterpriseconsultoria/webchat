@@ -1,0 +1,23 @@
+#!/bin/bash
+
+#at -f /opt/webchat/app/start.sh $(date +"%H:%M" --date="-1 minute ago")
+#atq
+
+/opt/webchat/python/bin/pip install -r /opt/webchat/app/requeriments.txt
+/opt/webchat/python/bin/pip install -r /opt/webchat/app/webwhatsapi/requeriments.txt
+
+
+/opt/webchat/python/bin/python /opt/webchat/app/manage.pyc sqlmigrate chatapp 0003 >>/tmp/fix.sql
+/opt/webchat/python/bin/python /opt/webchat/app/manage.pyc sqlmigrate chatapp 0004 >>/tmp/fix.sql
+/opt/webchat/python/bin/python /opt/webchat/app/manage.pyc sqlmigrate chatapp 0005 >>/tmp/fix.sql
+
+sqlite3 /opt/webchat/app/data/db.sqlite3 < /tmp/fix.sql
+
+/opt/webchat/python/bin/python /opt/webchat/app/manage.pyc migrate chatapp 0003 --fake
+/opt/webchat/python/bin/python /opt/webchat/app/manage.pyc migrate chatapp 0004 --fake
+/opt/webchat/python/bin/python /opt/webchat/app/manage.pyc migrate chatapp 0005 --fake
+
+
+cp /opt/webchat/python/bin/doc/webchat@.service /etc/systemd/system/
+systemctl daemon-reload
+chmod +x /opt/webchat/app/doc/webchat/webchat

@@ -1,0 +1,728 @@
+@font-face {
+font-family: emoji;
+src: url("emojione-android.ttf");
+}
+.emoji{
+	font-family:"emoji";
+}
+
+html,body,#all{
+	background: #000;
+	min-width: 100%;
+	min-height: 100%;
+	height: 100%;
+	position: absolute;
+}
+.conversa .btn{
+	position: absolute;
+	right: 2px;
+	bottom: 2px;
+}
+.atendimento{
+	display: inline-block;
+    font-size: 2em;
+    float: right;
+    width: 45px;
+    text-align: center;
+    cursor: pointer;
+}
+.opts{
+	position: fixed;
+	right: 0;
+	background: #fff;
+	text-align: right;
+	float:right;
+	padding: 5px;
+	z-index: 80000;
+}
+.opts button{
+    margin: 0px 0px 0px 8px;
+}
+.contato{
+	margin: 5px;
+    padding: 5px;
+    font-size: 0.75em;
+    border: dotted 2px #ccc;
+}
+.contato p{
+	text-align: center;
+	font-weight: bolder;
+	margin: 0;
+}
+.contato a{
+	display: block;
+}
+.toggle-buttom{
+	text-align: center;
+	width:40px;
+	height:100%;
+	display:inline-grid;
+	font-size:1.9em;
+	color: #bbb;
+}.toggle-buttom .ion:before {
+    vertical-align: sub;
+}
+.search-bar{
+	width:calc(100% - 45px);
+	display:inline-grid;
+	height:100%;
+}
+.top-bar{
+	height: 40px;
+	vertical-align: middle;
+}
+.search-bar input{
+	border: solid 2px #eee;
+	border-right: solid 15px rgba(0,0,0,0);
+	border-left: solid 15px rgba(0,0,0,0);
+	background: #eee;
+	color:#000;
+	border-radius: 2px;
+	display: inline-block;
+}
+.search-bar input:focus{
+    outline: #2196f3 auto 5px;
+	background: #fff;
+	margin: 5px 0 5px 0;
+}
+#back{
+	position: relative;
+	top: 2px;
+	left: 5px;
+	width: 30px;
+	height: 30px;
+	text-align: center;
+	display:none;
+    font-size: 1.9em;
+	color: #929292;
+}
+#sidebar{
+	background: #fff;
+	overflow: hidden;
+	transition: margin-left 0.35s, opacity 0.35s;
+  	transition-timing-function: ease-out;
+  	border-right: solid 1px #aaa;
+  	min-height: 100%;
+  	max-height: 100%;
+}
+.container-wrapper{
+	display: flex;
+  	min-height: 100%;
+  	max-height: 100%;
+  	min-width: 100%;
+  	max-width: 100%;
+}
+#sidebar .conversa{
+	margin: 5px 0 5px 0;
+	display: block;
+	width: 100%;
+	height: 60px;
+	padding: 5px;
+	cursor: pointer;
+	position: relative;
+}
+#sidebar .conversa .foto{
+	display: inline-block;
+	width: 50px;
+	height: 50px;
+	background: #55c155;
+	border-radius: 50%;
+	vertical-align: middle;
+	overflow: hidden;
+}#sidebar .conversa .foto img{
+	width: 100%;
+	height: 100%;
+}
+#sidebar .conversa .dados{
+	padding: 0;
+	width: calc(100% - 60px);
+	display: inline-block;
+	height: 50px;
+	vertical-align: middle;
+}
+#sidebar .conversa .dados .nome{
+	font-weight: bolder;
+	overflow:hidden;
+	display: inline-block;
+	max-height: 50%;
+	width: calc(100% - 60px);
+}#sidebar .conversa .dados .unreaded{
+    overflow: hidden;
+    display: inline-block;
+    width: 25px;
+    font-size: 0.65em;
+    height: 25px;
+    border-radius: 82%;
+    line-height: 25px;
+    font-weight: bolder;
+    text-align: center;
+    background: #10c520;
+    color: white;
+}
+#sidebar .conversa.selecionada .dados .unreaded{
+    opacity: 0;
+}
+#sidebar .conversa .dados .app{
+	overflow:hidden;
+	display: inline-block;
+	width: 20px;
+	height: 25px;
+	font-size: 1em;
+	line-height: 25px;
+	font-weight: bolder;
+	text-align: right;
+}
+#sidebar .conversa .dados .ultima-mensagem{
+	overflow:hidden;
+	display: inline-block;
+	width: 80%;
+	margin-top: -5px;
+	color: #777;
+    vertical-align: top;
+}
+#sidebar .conversa .dados .hora{
+	overflow:hidden;
+	display: inline-block;
+	width: 17%;
+	height: 25px;
+	font-size: 0.7em;
+	line-height: 25px;
+	font-weight: bolder;
+	text-align: right;
+}
+
+#sidebar .conversa.selecionada{
+	background: #2196f388;
+}
+#sidebar .conversas{
+	position: relative;
+	min-width: 100%;
+    height: calc(100% - 40px);
+    overflow-y: auto;
+    max-height: calc(100% - 40px);
+    min-height: calc(100% - 40px);
+}
+
+
+#mainMenu{
+	position: fixed;
+	left: 0;
+	width:250px;
+	height: 100%;
+	background: #fff;
+	top:0;
+	transition: left 0.35s;
+	z-index: 100000;
+	overflow: auto;
+}
+#mainMenuBack{
+	position: fixed;
+	right: 0;
+	width: 100%;
+	height: 100%;
+	background: #000;
+	opacity: 0.25;
+	top:0;
+	z-index: 90000;
+  	visibility: visible;
+	transition: opacity 0.35s, visibility 0.35s;
+  	transition-timing-function: ease-out;	
+}
+#conteudo{
+	transition-timing-function: ease-out;	
+	overflow: hidden;
+  	width: 100%;
+  	height: 100%;
+  	max-height: 100%;
+  	min-height: 100%;
+}
+
+#mainMenu.escondido{
+	padding: 0!important;
+	left: -250px;
+}
+#mainMenuBack.escondido{
+	opacity: 0;
+  	visibility: hidden;
+}
+
+
+#mainMenu .perfil{
+	width: 100%;
+	height: 200px;
+	background: #10a0bd;
+	text-align: center;
+	padding: 20px;
+}
+#mainMenu .foto{
+	display: inline-block;
+	width: 100px;
+	height: 100px;
+	overflow: hidden;
+	border: solid 1px #fff;
+	border-radius: 50%;
+	background: white;
+}
+#mainMenu .usuario{
+	color: white;
+	font-weight: bolder;
+}
+#mainMenu .foto img{
+	width: 100%;
+	height: 100%;
+	overflow: hidden;
+	border-radius: 50%;
+	background: white;
+}
+#mainMenu .menu{
+	width: 100%;
+	height: calc(100% - 200px);
+	overflow-y: auto;
+}
+
+#mainMenu .menu .menu-item{
+	width: 100%;
+	height: 50px;
+	line-height: 50px;
+	padding: 0 5px;
+	cursor: pointer;
+	font-weight: bold;
+}
+
+#mainMenu .menu .menu-item:hover{
+	background: #ddd;
+}
+
+#conteudo .top-bar{
+    background: #fff;
+  	display: block;
+    height: 49px;
+    padding: 0 4px 0 4px;
+}
+#conteudo .top-bar .foto{
+	display: inline-block;
+	margin-top: -10px;
+	width: 35px;
+	height: 35px;
+	background: #55c155;
+	border-radius: 50%;
+	vertical-align: middle;
+	overflow: hidden;
+}
+#conteudo .top-bar .foto img{
+	width: 100%;
+	height: 100%;
+}
+#conteudo .top-bar .dados{
+	padding: 0 15px;
+	display: inline-block;
+	height: 50px;
+	vertical-align: middle;
+	width: calc(100% - 120px);
+}
+#conteudo .top-bar .dados .nome{
+	font-weight: bolder;
+	overflow:hidden;
+	display: inline-block;
+	width
+	height: 50px;
+	line-height: 41px;
+}
+#mensagem-input{
+	background: #fff;
+  	display: inline-block;
+    bottom: 0;
+    left: 0; 
+	width: 100%;
+    padding: 0 4px 0 4px;
+}
+#mensagem-input .butao{
+	display: inline-block;
+	vertical-align: bottom;
+	height: 40px;
+	width: 40px;
+	font-size: 30px;
+	color: #bbb;
+	margin-bottom: 15px;
+}
+#mensagem-input .butao .ion{
+	width: 100%;
+	text-align: center;
+	margin-top: 8px;
+}
+#mensagem-input-field{
+	width: calc(100% - 135px);
+	margin-bottom: 15px;
+	border: none;
+	outline: none;
+	resize: none;
+}
+#mensagem-input.disabled{
+	position: relative;
+}
+
+#mensagem-input.disabled:after{
+	content: 'Inicie o atendimento no canto supeior direito.';
+    position: absolute;
+    font-weight: bolder;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    line-height: 51px;
+    color:#d55!important;
+    background: #fff8;
+    animation: piscar 1.5s infinite;
+
+}
+
+#chat{
+	background: #eaeaea;
+  	display: block;
+	width: 100%;
+    padding: 0 4px 0 4px;
+    overflow-y: auto;
+    position: relative;
+}
+#chat .mensagem{
+    max-height: none;
+    padding: 10px;
+	position: relative;
+    border-top-color: transparent;
+}
+#chat .mensagem .conteudo .status{
+	margin: 0px 0 -15px 0;
+    line-height: 8px;
+    height: 0px;
+    font-size: 13px;
+    font-weight: bold;
+    text-align: right;
+}
+#chat .mensagem .conteudo br{
+	/*display: none;*/
+}
+#chat .mensagem .conteudo .user{
+	display: block;
+}
+#chat .call_log{
+	text-align: center;
+}
+#chat .call_log span{
+    font-size: 0.7em;
+    background: #c2809d;
+    border-radius: 5px;
+    padding: 3px;
+    color: snow;
+    font-weight: bolder;
+}
+
+#chat .mensagem .conteudo {
+	max-width: 400px;
+	min-width: 100px;
+	padding: 5px 10px 10px 10px;
+	border-radius: 10px;
+	text-align: left;
+	background: white;
+	white-space: pre-line;
+	display: inline-block;
+	border-bottom-left-radius:0px;
+	word-break: break-word;
+    max-height: none;
+	margin: 0 0 0 10px;
+}
+#chat .mensagem.sent .conteudo {
+	border-radius: 10px;
+	border-bottom-right-radius: 0px;
+	background: #d0ebbb;
+	margin: 0 10px 0 0;
+}
+.audio audio{
+	margin: -60px auto -30px auto;
+}
+#chat .mensagem.sent {
+	text-align: right;
+}
+#file{
+	cursor: pointer;
+}
+
+#chat .mensagem .orelha {
+    display: inline-block;
+	position: absolute;
+	bottom: 10px;
+	left: 10px;
+	width: 15px;
+    border: solid 10px #fff;
+    border-top-color: transparent;
+    border-right-width: 0px;
+    border-left-color: transparent;
+}
+
+#chat .mensagem.sent .orelha {
+    bottom: 10px;
+    right: 10px;
+    left: unset;
+    border: solid 10px #d0ebbb;;
+    border-top-color: transparent;
+    border-left-width: 0px;
+    border-right-color: transparent;
+
+}
+
+#modal-window{
+	position: fixed;
+	padding: 10px;
+	top:0px;
+	bottom: 0px;
+	left:0px;
+	right: 0px;
+	background: #0008;
+	z-index: 110000;
+	transition: opacity 0.4s, visibility 0.4s;
+}
+.modal-bar {
+	display: block;
+	margin: 0;
+	width: 100%;
+	height: 30px;
+	padding: 5px;
+	background: #eee;
+}
+#fechar-janela{
+	display: inline-block;
+    width: 21px;
+    padding: 0;
+    height: 20px;
+    float: right;
+    font-size: 21px;
+    text-align: center;
+    border-radius: 50%;
+}
+
+#fechar-janela:hover{
+	cursor: pointer;
+	background: #ddd;
+}
+
+#janela-modal{
+	margin: 0;
+	display: block;
+	width: 100%;
+	height: calc(100% - 30px);
+	background: #fff;
+	border:none;
+}
+#modal-window.escondido{
+	opacity: 0;
+	visibility: hidden;
+}
+
+
+#filemodal{
+	position: fixed;
+	padding: 10px;
+	top:0px;
+	bottom: 0px;
+	left:0px;
+	right: 0px;
+	background: #0008;
+	z-index: 80000;
+	transition: opacity 0.4s, visibility 0.4s;
+}
+#file-fechar-janela{
+	display: inline-block;
+    width: 21px;
+    padding: 0;
+    height: 20px;
+    float: right;
+    font-size: 21px;
+    text-align: center;
+    border-radius: 50%;
+}
+
+#file-fechar-janela:hover{
+	cursor: pointer;
+	background: #ddd;
+}
+
+#file-janela-modal{
+	margin: 0;
+	display: flex;
+	width: 100%;
+	height: calc(100% - 80px);
+	background: #fff;
+	border:none;
+	overflow-X: auto;
+    justify-content: left;
+    vertical-align: center;
+}
+#filemodal.escondido{
+	opacity: 0;
+	visibility: hidden;
+}
+
+#filemodal .foot{
+	text-align: right;
+	padding: 5px 10px;
+	background: #eee;
+}
+.arquivo-item{
+	position: relative;
+    display: inline-flex;
+	min-width: 150px;
+	max-width: 150px;
+	max-height: 200px;
+	min-height: 200px;
+	word-break: break-all;
+	text-align: center;
+	vertical-align: top;
+	background: #ececec;
+	margin: 4px;
+	user-select: none;
+	background-size: contain !important;
+    background-repeat: no-repeat !important;
+    background-position-y: center !important;
+
+}
+.arquivo-item-add{
+	position: relative;
+    display: inline-flex;
+	min-width: 150px;
+	max-width: 150px;
+	max-height: 200px;
+	min-height: 200px;
+	word-break: break-all;
+	text-align: center;
+	vertical-align: top;
+	background: #ececec;
+	margin: 4px;
+	user-select: none;
+	background-size: contain !important;
+    background-repeat: no-repeat !important;
+    background-position-y: center !important;
+    cursor: pointer;
+
+}
+.arquivo-item-add span{	
+	font-family: "Ionicons";
+	width: 100%;
+	height: 100%;
+	font-size: 8em;
+	color: #aaa;
+	-webkit-touch-callout: none;
+	-webkit-user-select: none;
+	-khtml-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+	font-weight: bolder;
+}
+.arquivo-item p{
+	position: absolute;
+	bottom: 0;
+	font-size: 0.6em;
+	margin: 0 2px;
+	-webkit-touch-callout: none;
+	-webkit-user-select: none;
+	-khtml-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+	font-weight: bolder;
+}
+
+#mic.gravando{
+	color:red;
+}
+#mic.invalido{
+	color:#f5ebeb;
+}
+#mic-cancelar{
+	background: #fff;
+	border: solid 1px #eee;
+	position: fixed;
+	bottom: 76px;
+	right: 0;
+	width: 80px;
+	height: 40px;
+	z-index: 20000;
+	color:#990707;
+	text-align: center;
+	line-height: 35px;
+	animation: piscar 1s linear infinite;
+	cursor: pointer;
+	transition: visibility 0.5s;
+}
+@keyframes piscar {
+  50% {
+    color: #9907075c;
+  }
+}
+@media only screen and (max-width: 767px) {
+	#conteudo{
+		position: fixed;
+		right: 0;
+		top:0;
+		max-width: 100%;
+		transition: right 0.35s;
+	}
+	#sidebar{
+		position: fixed;
+		left: 0;
+		top:0;
+		max-width: 100%;
+	}
+	#back{
+		display: inline-block;
+	}
+	#conteudo.escondido{
+		right: -100%;
+	}
+	#sidebar.escondido{
+		margin-left: -100px;
+		opacity: 0.75;
+	}
+}
+
+.play-btn{
+	font-size: 25px;
+}
+.audio-progress{
+	display: inline-block;
+	width: 250px;
+	margin: 3px 10px;
+}
+.audio-progress .progress-bar 
+{
+	transition: width 0s;
+	background: #17a2b8 !important;
+}
+@media only screen and (max-width: 452px) {
+	#chat .mensagem .conteudo {
+		max-width: 300px;
+	}
+}
+@media only screen and (max-width: 352px) {
+	#chat .mensagem .conteudo {
+		max-width: 250px;
+	}
+}
+
+@media only screen and (max-width: 302px) {
+	body:before{
+		content: "Dispositivo não suportado";
+		text-align: center;
+		padding-top: 10px;
+		position: fixed;
+		top: 0;
+		left: 0;
+		bottom: 0;
+		right: 0;
+		background: white;
+		z-index: 120000;
+	}
+}
+
+
+

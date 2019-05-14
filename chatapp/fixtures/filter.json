@@ -1,0 +1,1 @@
+[{"model": "chatapp.filter", "pk": 1, "fields": {"description": "#ajuda", "filter_match": "iexact", "check": "#ajuda", "reply": "", "replygroup": true, "script": null, "menu": 4, "active": true, "contacts": [], "contactslist": [], "sources": []}}]

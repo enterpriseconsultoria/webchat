@@ -1,0 +1,16 @@
+[Unit]
+Description=gunicorn daemon
+After=network.target
+
+[Service]
+LimitAS=infinity
+LimitRSS=infinity
+LimitCORE=infinity
+LimitNOFILE=65536
+User=www-data
+Group=www-data
+WorkingDirectory=/usr/local/webchat
+ExecStart=/opt/webchatenv/bin/gunicorn -k gthread --threads 30 --access-logfile - --timeout 3600 --workers 4 --bind unix:/run/gunicorn/webchat.socket webchat.wsgi:application
+
+[Install]
+WantedBy=multi-user.target
