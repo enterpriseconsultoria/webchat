@@ -26,7 +26,7 @@ apt install ttf-freefont
 
 echo "www-data    ALL=NOPASSWD: /usr/local/webchat/bin/sudo.sh" > /etc/sudoers.d/webchat
 
-apt install python3-pip
+apt install -y python3-pip
 
 
 git clone https://github.com/thiagosm/webchat.git /usr/local/webchat
