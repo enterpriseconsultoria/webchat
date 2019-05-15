@@ -26,6 +26,7 @@
   <p id="erro">O Serviço não está sendo executado.<br><a href="/chat/service/start/{{ sourceid }}" target="_blank" rel="noopener">Iniciar o Serviço</a></p>
   <p id="loading">Carregando...</p>
   {{ wellcome }}
+  <p><a {% url 'admin:chatapp_source' %}>Voltar</a></p>
   <script src="{% static 'others/js/jquery.min.js' %}" type="text/javascript"></script>
   <script>
 
