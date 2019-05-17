@@ -1,14 +1,3 @@
-echo Digite o nome da sua empresa:
-read PROVEDOR
-while [ -z  "$PROVEDOR" ]; do
-echo Nome inválido.
-echo Digite o nome da sua empresa:
-read PROVEDOR
-done
-
-
-
-
 cat <<EOF > /etc/apt/source.list
 deb http://http.us.debian.org/debian/ stretch main
 deb-src http://http.us.debian.org/debian/ stretch main
@@ -37,480 +26,43 @@ apt install ttf-freefont
 
 echo "www-data    ALL=NOPASSWD: /usr/local/webchat/bin/sudo.sh" > /etc/sudoers.d/webchat
 
-apt install -y python3-pip
 
+# Python 3.7
+cd /usr/src
+wget https://www.python.org/ftp/python/3.7.3/Python-3.7.3.tgz
+tar xzf Python-3.7.3.tgz
+cd Python-3.7.3
+./configure --enable-optimizations
+make altinstall
+
+# Golang
+cd /usr/local
+wget https://dl.google.com/go/go1.12.2.linux-amd64.tar.gz
+tar xvf go1.12.2.linux-amd64.tar.gz
+
+cat <<EOF >> /etc/profile
+export GOROOT=/usr/local/go
+export PATH=/usr/local/go/bin:$PATH
+EOF
+
+source /etc/profile 
+
+pip3.7 install virtualenv
+virtualenv /opt/webchatenv
 
 git clone https://github.com/thiagosm/webchat.git /usr/local/webchat
 
-pip3 install -r /usr/local/webchat/requirements.txt 
-cd /usr/local/webchat/
+/opt/webchatenv/bin/pip3 install -r /usr/local/webchat/requirements.txt 
 
-mkdir data
-mkdir sessions
-
-
-cat <<EOF > chatapp/fixtures/menuitem.json
-[
-   {
-      "model":"chatapp.menuitem",
-      "pk":1,
-      "fields":{
-         "menu":2,
-         "seq":1,
-         "option":"1",
-         "message":"Voc\u00ea escolheu a op\u00e7\u00e3o sem acesso. Estamos verificando o acesso.",
-         "input_data":false,
-         "option_menu":null,
-         "updategroup":1,
-         "leave_group":false,
-         "script":5,
-         "group_chat":false,
-         "leave_chat":false,
-         "active":true
-      }
-   },
-   {
-      "model":"chatapp.menuitem",
-      "pk":2,
-      "fields":{
-         "menu":2,
-         "seq":2,
-         "option":"2",
-         "message":"Voc\u00ea escolheu a op\u00e7\u00e3o acesso lento. Estamos verificando o uso da sua conex\u00e3o.",
-         "input_data":false,
-         "option_menu":null,
-         "updategroup":null,
-         "leave_group":false,
-         "script":5,
-         "group_chat":false,
-         "leave_chat":false,
-         "active":true
-      }
-   },
-   {
-      "model":"chatapp.menuitem",
-      "pk":3,
-      "fields":{
-         "menu":2,
-         "seq":3,
-         "option":"3",
-         "message":"Voc\u00ea informou problemas na abertura de outras p\u00e1ginas. Estamos abrir um chamado...",
-         "input_data":false,
-         "option_menu":null,
-         "updategroup":null,
-         "leave_group":false,
-         "script":3,
-         "group_chat":false,
-         "leave_chat":false,
-         "active":true
-      }
-   },
-   {
-      "model":"chatapp.menuitem",
-      "pk":4,
-      "fields":{
-         "menu":2,
-         "seq":1,
-         "option":"0",
-         "message":"",
-         "input_data":false,
-         "option_menu":1,
-         "updategroup":null,
-         "leave_group":false,
-         "script":null,
-         "group_chat":false,
-         "leave_chat":false,
-         "active":true
-      }
-   },
-   {
-      "model":"chatapp.menuitem",
-      "pk":5,
-      "fields":{
-         "menu":1,
-         "seq":1,
-         "option":"1",
-         "message":"",
-         "input_data":false,
-         "option_menu":2,
-         "updategroup":1,
-         "leave_group":false,
-         "script":null,
-         "group_chat":false,
-         "leave_chat":false,
-         "active":true
-      }
-   },
-   {
-      "model":"chatapp.menuitem",
-      "pk":6,
-      "fields":{
-         "menu":1,
-         "seq":2,
-         "option":"2",
-         "message":"",
-         "input_data":false,
-         "option_menu":3,
-         "updategroup":2,
-         "leave_group":false,
-         "script":null,
-         "group_chat":false,
-         "leave_chat":false,
-         "active":true
-      }
-   },
-   {
-      "model":"chatapp.menuitem",
-      "pk":7,
-      "fields":{
-         "menu":3,
-         "seq":1,
-         "option":"1",
-         "message":"Estamos consultando 2 via de boleto em aberto. S\u00f3 um momento.",
-         "input_data":false,
-         "option_menu":null,
-         "updategroup":null,
-         "leave_group":false,
-         "script":2,
-         "group_chat":false,
-         "leave_chat":false,
-         "active":true
-      }
-   },
-   {
-      "model":"chatapp.menuitem",
-      "pk":8,
-      "fields":{
-         "menu":3,
-         "seq":2,
-         "option":"2",
-         "message":"Estamos processando a sua requisi\u00e7\u00e3o.",
-         "input_data":false,
-         "option_menu":null,
-         "updategroup":null,
-         "leave_group":false,
-         "script":4,
-         "group_chat":false,
-         "leave_chat":false,
-         "active":true
-      }
-   },
-   {
-      "model":"chatapp.menuitem",
-      "pk":9,
-      "fields":{
-         "menu":3,
-         "seq":10,
-         "option":"0",
-         "message":"",
-         "input_data":false,
-         "option_menu":1,
-         "updategroup":null,
-         "leave_group":false,
-         "script":null,
-         "group_chat":false,
-         "leave_chat":false,
-         "active":true
-      }
-   },
-   {
-      "model":"chatapp.menuitem",
-      "pk":10,
-      "fields":{
-         "menu":3,
-         "seq":99,
-         "option":"#",
-         "message":"Estamos encaminhando solicita\u00e7\u00e3o para setor respons\u00e1vel. Aguarde que iremos atend\u00ea-lo.",
-         "input_data":false,
-         "option_menu":null,
-         "updategroup":2,
-         "leave_group":false,
-         "script":null,
-         "group_chat":true,
-         "leave_chat":false,
-         "active":true,
-         "no_agent":false
-      }
-   },
-   {
-      "model":"chatapp.menuitem",
-      "pk":11,
-      "fields":{
-         "menu":1,
-         "seq":0,
-         "option":"???",
-         "message":"Digite CPF/CNPJ do Assinante.",
-         "input_data":false,
-         "option_menu":2,
-         "updategroup":null,
-         "leave_group":false,
-         "script":null,
-         "group_chat":false,
-         "leave_chat":false,
-         "active":true
-      }
-   },
-   {
-      "model":"chatapp.menuitem",
-      "pk":12,
-      "fields":{
-         "menu":4,
-         "seq":1,
-         "option":"???",
-         "message":"",
-         "input_data":true,
-         "option_menu":1,
-         "updategroup":null,
-         "leave_group":false,
-         "script":1,
-         "group_chat":false,
-         "leave_chat":false,
-         "active":true
-      }
-   },
-   {
-      "model":"chatapp.menuitem",
-      "pk":13,
-      "fields":{
-         "menu":2,
-         "seq":98,
-         "option":"9",
-         "message":"Obrigado por escolher o $PROVEDOR.",
-         "input_data":false,
-         "option_menu":null,
-         "updategroup":null,
-         "leave_group":false,
-         "script":null,
-         "group_chat":false,
-         "leave_chat":true,
-         "active":true
-      }
-   },
-   {
-      "model":"chatapp.menuitem",
-      "pk":14,
-      "fields":{
-         "menu":3,
-         "seq":98,
-         "option":"9",
-         "message":"Obrigado por escolher $PROVEDOR. At\u00e9 a pr\u00f3xima.",
-         "input_data":false,
-         "option_menu":null,
-         "updategroup":null,
-         "leave_group":false,
-         "script":null,
-         "group_chat":false,
-         "leave_chat":true,
-         "active":true
-      }
-   },
-   {
-      "model":"chatapp.menuitem",
-      "pk":15,
-      "fields":{
-         "menu":1,
-         "seq":3,
-         "option":"3",
-         "message":"",
-         "input_data":false,
-         "option_menu":5,
-         "updategroup":3,
-         "leave_group":false,
-         "script":null,
-         "group_chat":false,
-         "leave_chat":false,
-         "active":true
-      }
-   },
-   {
-      "model":"chatapp.menuitem",
-      "pk":16,
-      "fields":{
-         "menu":5,
-         "seq":1,
-         "option":"1",
-         "message":"Plano 50M - 80,00\r\nPlano 60M - 90,00\r\nPlano 100M - 130,00",
-         "input_data":false,
-         "option_menu":null,
-         "updategroup":null,
-         "leave_group":false,
-         "script":null,
-         "group_chat":false,
-         "leave_chat":false,
-         "active":true
-      }
-   },
-   {
-      "model":"chatapp.menuitem",
-      "pk":17,
-      "fields":{
-         "menu":4,
-         "seq":1,
-         "option":"2",
-         "message":"",
-         "input_data":false,
-         "option_menu":5,
-         "updategroup":null,
-         "leave_group":false,
-         "script":null,
-         "group_chat":true,
-         "leave_chat":false,
-         "active":true,
-         "no_agent":false
-      }
-   },
-   {
-      "model":"chatapp.menuitem",
-      "pk":18,
-      "fields":{
-         "menu":4,
-         "seq":1,
-         "option":"0",
-         "message":"Voc\u00ea escolheu falar com um dos nossos atendentes.\nDigite #ajuda para voltar ao menu principal e  escolher outras op\u00e7\u00f5es.",
-         "input_data":false,
-         "option_menu":null,
-         "updategroup":null,
-         "leave_group":false,
-         "script":null,
-         "group_chat":true,
-         "leave_chat":false,
-         "active":true,
-         "no_agent":false
-      }
-   },
-   {
-      "model":"chatapp.menuitem",
-      "pk":19,
-      "fields":{
-         "menu":2,
-         "seq":4,
-         "option":"#",
-         "message":"Estamos encaminhando para atendimento. Se quiser retornar para o menu inicial do atendimento, digite #ajuda",
-         "input_data":false,
-         "option_menu":null,
-         "updategroup":null,
-         "leave_group":false,
-         "script":null,
-         "group_chat":true,
-         "leave_chat":false,
-         "active":true,
-         "no_agent":false
-      }
-   },
-   {
-      "model":"chatapp.menuitem",
-      "pk":20,
-      "fields":{
-         "menu":5,
-         "seq":1,
-         "option":"0",
-         "message":"",
-         "input_data":false,
-         "option_menu":1,
-         "updategroup":null,
-         "leave_group":false,
-         "script":null,
-         "group_chat":false,
-         "leave_chat":false,
-         "active":true
-      }
-   },
-   {
-      "model":"chatapp.menuitem",
-      "pk":21,
-      "fields":{
-         "menu":5,
-         "seq":1,
-         "option":"#",
-         "message":"Estamos encaminhando para o atendimento",
-         "input_data":false,
-         "option_menu":null,
-         "updategroup":3,
-         "leave_group":false,
-         "script":null,
-         "group_chat":true,
-         "leave_chat":false,
-         "active":true,
-         "no_agent":false
-      }
-   }
-]
-EOF
-
-cat <<EOF > chatapp/fixtures/menu.json
-[
-   {
-      "model":"chatapp.menu",
-      "pk":1,
-      "fields":{
-         "description":"Menu Principal",
-         "message":"Bem vindo ao $PROVEDOR\r\n1 - Suporte\r\n2 - Financeiro\r\n3 - Vendas",
-         "retry":10,
-         "invalid_option_message":"Op\u00e7\u00e3o inv\u00e1lida, favor informar as op\u00e7\u00f5es abaixo.",
-         "default":true
-      }
-   },
-   {
-      "model":"chatapp.menu",
-      "pk":2,
-      "fields":{
-         "description":"Menu Suporte",
-         "message":"Menu Suporte\r\n1 - Sem acesso\r\n2 - Acesso lento\r\n3 - Problema na abertura de algumas p\u00e1ginas\r\n9 - Encerrar atendimento\r\n0 - Retornar ao menu anterior\r\n# - Falar com atendente.",
-         "message_alt":"Menu Suporte\r\n1 - Sem acesso\r\n2 - Acesso lento\r\n3 - Problema na abertura de algumas p\u00e1ginas\r\n9 - Encerrar atendimento\r\n0 - Retornar ao menu anterior\r",
-         "retry":10,
-         "invalid_option_message":"Op\u00e7\u00e3o inv\u00e1lida, favor digitar uma das op\u00e7\u00f5es abaixo.",
-         "default":false
-      }
-   },
-   {
-      "model":"chatapp.menu",
-      "pk":3,
-      "fields":{
-         "description":"Menu Financeiro",
-         "message":"1 - 2\u00aa via do boleto\r\n2 - Promessa de pagamento\r\n3 - Altera\u00e7\u00e3o de vencimento\r\n0 - Retornar menu anterior\r\n9 - Encerrar atendimento\r\n# - Falar com atendente",
-         "message_alt":"1 - 2\u00aa via do boleto\r\n2 - Promessa de pagamento\r\n3 - Altera\u00e7\u00e3o de vencimento\r\n0 - Retornar menu anterior\r\n9 - Encerrar atendimento",
-         "retry":10,
-         "invalid_option_message":"Op\u00e7\u00e3o inv\u00e1lida. Favor informar uma das op\u00e7\u00f5es abaixo.",
-         "default":false
-      }
-   },
-   {
-      "model":"chatapp.menu",
-      "pk":4,
-      "fields":{
-         "description":"Identificacao Cliente",
-         "message":"Seja bem-vindo ao $PROVEDOR. \r\nDigite CPF/CNPJ do assinante.\r\n\r\nSe n\u00e3o for cliente,\r\nDigite 0 para falar com um dos nossos atendentes.\r\nDigite 2 para consultar nossos planos.",
-         "message_alt":"Seja bem-vindo ao . \r\nDigite CPF/CNPJ do assinante.\r\nDigite 2 para consultar nossos planos.\r\nNo momento, estamos fora do horário de atendimento",
-         "retry":10,
-         "invalid_option_message":"",
-         "default":true
-      }
-   },
-   {
-      "model":"chatapp.menu",
-      "pk":5,
-      "fields":{
-         "description":"Menu Vendas",
-         "message":"1 - Planos\r\n0 - Retornar menu anterior\r\n# - Falar com atendente.",
-         "message_alt":"1 - Planos\r\n0 - Retornar menu anterior.",
-         "retry":10,
-         "invalid_option_message":"",
-         "default":false
-      }
-   }
-]
-EOF
-
-
-python3.5 manage.py makemigrations
-python3.5 manage.py migrate
-python3.5 manage.py loaddata user
-python3.5 manage.py loaddata source
-python3.5 manage.py loaddata group
-python3.5 manage.py loaddata script
-python3.5 manage.py loaddata menu
-python3.5 manage.py loaddata menuitem
-python3.5 manage.py loaddata filter
+python manage.py makemigrations
+python manage.py migrate
+python manage.py loaddata user
+python manage.py loaddata source
+python manage.py loaddata group
+python manage.py loaddata script
+python manage.py loaddata menu
+python manage.py loaddata menuitem
+python manage.py loaddata filter
 
 
 cat <<EOF > /etc/nginx/sites-enabled/webchat
@@ -528,12 +80,10 @@ server {
 	    include proxy_params;
 	    access_log /var/log/nginx/webchat_access.log;
 	    error_log /var/log/nginx/webchat_error.log;
-	}
+	};
 }
 EOF
 
-chown -R www-data /usr/local/webchat/
-chmod +x /usr/local/webchat/bin/sudo.sh
 
 cp /usr/local/webchat/install/gunicorn_webchat.socket /etc/systemd/system/
 cp /usr/local/webchat/install/gunicorn_webchat.service /etc/systemd/system/
@@ -547,4 +97,13 @@ systemctl start gunicorn_webchat.socket
 systemctl start gunicorn_webchat.service
 systemctl stop nginx
 systemctl start nginx 
+
+
+
+
+
+
+
+
+    
 
