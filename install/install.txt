@@ -1,6 +1,6 @@
 echo Digite o nome da sua empresa:
 read PROVEDOR
-while [ -z  "$PROVEDOR" ] then
+while [ -z  "$PROVEDOR" ]; do
 echo Nome inválido.
 echo Digite o nome da sua empresa:
 read PROVEDOR
