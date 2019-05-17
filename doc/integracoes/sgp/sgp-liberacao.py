@@ -27,9 +27,6 @@ class WebService:
 
     def run(self, q, **kwargs):
 
-        reload(sys)
-        sys.setdefaultencoding('utf-8')
-
         datareq = {}
         data_json = {}
         try:

@@ -15,8 +15,6 @@ class WebService:
         self.WS_URL = '%s%s' %(self.WS_HOST,self.WS_PATH)
 
     def responseContrato(self,rws,**kwargs):
-        reload(sys)
-        sys.setdefaultencoding('utf-8')
         response = {}
         response['contratoId'] = str(rws.get('contratoId'))
         response['razaoSocial'] = str(rws.get('razaoSocial'))
