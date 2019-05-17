@@ -4,7 +4,7 @@
       "pk":1,
       "fields":{
          "description":"Menu Principal",
-         "message":"Bem vindo ao \r\n1 - Suporte\r\n2 - Financeiro\r\n3 - Vendas",
+         "message":"Bem vindo ao $PROVEDOR\r\n1 - Suporte\r\n2 - Financeiro\r\n3 - Vendas",
          "retry":10,
          "invalid_option_message":"Op\u00e7\u00e3o inv\u00e1lida, favor informar as op\u00e7\u00f5es abaixo.",
          "default":true
@@ -39,7 +39,7 @@
       "pk":4,
       "fields":{
          "description":"Identificacao Cliente",
-         "message":"Seja bem-vindo ao . \r\nDigite CPF/CNPJ do assinante.\r\n\r\nSe n\u00e3o for cliente,\r\nDigite 0 para falar com um dos nossos atendentes.\r\nDigite 2 para consultar nossos planos.",
+         "message":"Seja bem-vindo ao $PROVEDOR. \r\nDigite CPF/CNPJ do assinante.\r\n\r\nSe n\u00e3o for cliente,\r\nDigite 0 para falar com um dos nossos atendentes.\r\nDigite 2 para consultar nossos planos.",
          "message_alt":"Seja bem-vindo ao . \r\nDigite CPF/CNPJ do assinante.\r\nDigite 2 para consultar nossos planos.\r\nNo momento, estamos fora do horário de atendimento",
          "retry":10,
          "invalid_option_message":"",
