@@ -45,13 +45,14 @@ class WebService:
 
             r = requests.post(self.WS_URL, data=datareq)
             rws = r.json()
+            print(rws.get('liberado'))
 
             if rws.get('liberado') == 1:
                 return {'redirect_menu': True, 
                          'message': u'Acesso liberado com sucesso. Protocolo gerado: %s. Em alguns minutos a conexão estará normalizada. Caso não normalize o acesso em 5 minutos, favor desligar e ligar o equipamento.' %rws.get('protocolo')}
             else:
                 return {'redirect_menu':True,
-                        'message': rws.get('msg') or u'Erro Interno, tente novamente posteriormente.'}
+                        'message': rws.get('msg') or u'Desculpa, não foi possível realizar a promessa de pagamento. Entre em contato com o suporte financeiro para mais informações.'}
         else:
             return {'message': u'Erro no processamento. Favor identifique-se novamente digitando a opção #ajuda'}
 
