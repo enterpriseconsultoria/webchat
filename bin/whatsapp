@@ -2,6 +2,6 @@
 while true
 do
 	export GOPATH="/usr/local/go-path"
-	/usr/local/go/bin/go run /usr/local/webchat/bin/whatsapp.go --data $@
+	/usr/local/webchat/bin/whatsapp.so --data $@
 	sleep 5
 done
