@@ -1,7 +1,6 @@
 #!/bin/bash
-while true;
+while true
 do
-	export GOPATH="/usr/local/go-path"
 	/usr/local/webchat/bin/whatsapp.so $@
 	sleep 5
 done

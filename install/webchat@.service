@@ -6,8 +6,12 @@ AssertPathExists=/usr/local/webchat/bin/whatsapp
 Type=simple
 User=www-data
 Group=www-data
-ExecStart=/usr/local/webchat/bin/whatsapp %i >> /var/log/webchat_%i
+ExecStart=/usr/local/webchat/bin/whatsapp --data %i
 Restart=on-failure
+StandardError=syslog+journal
+StandardOutput=syslog+journal
+SyslogIdentifier=webchat
 
 [Install]
 WantedBy=multi-user.target
+
