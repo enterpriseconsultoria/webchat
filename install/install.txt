@@ -505,6 +505,8 @@ EOF
 mkdir /usr/local/webchat/chatapp/migrations
 touch /usr/local/webchat/chatapp/migrations/__init__.py
 
+chown -R www-data /usr/local/webchat/
+
 python3.5 manage.py makemigrations
 python3.5 manage.py migrate
 python3.5 manage.py loaddata user
@@ -535,7 +537,6 @@ server {
 }
 EOF
 
-chown -R www-data /usr/local/webchat/
 chmod +x /usr/local/webchat/bin/*
 
 
