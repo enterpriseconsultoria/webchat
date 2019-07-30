@@ -27,7 +27,7 @@ localectl set-locale LANG=pt_BR.UTF-8 LC_CTYPE=pt_BR.UTF-8
 . /etc/default/locale
 export LANG=pt_BR.UTF-8 LC_CTYPE=pt_BR.UTF-8 LC_ALL=pt_BR.UTF-8
 
-apt-get install -y sudo net-tools wget ca-certificates git sqlite bash libmariadb-dev libpq-dev build-essential gcc g++ python3-setuptools libmagic-dev libev-dev libgcrypt20-dev libxml2-dev libxslt1-dev libffi-dev fontconfig cython mariadb-client libmariadbclient-dev libdbus-glib-1-2 screen locales-all at nginx postgresql postgresql-client libpq-dev libncurses5 libreadline-gplv2-dev libncursesw5-dev libssl-dev libsqlite3-dev tk-dev libgdbm-dev libc6-dev libbz2-dev
+apt-get install -y sudo net-tools wget ca-certificates git vim sqlite bash libmariadb-dev libpq-dev build-essential gcc g++ python3-setuptools libmagic-dev libev-dev libgcrypt20-dev libxml2-dev libxslt1-dev libffi-dev fontconfig cython mariadb-client libmariadbclient-dev libdbus-glib-1-2 screen locales-all at nginx postgresql postgresql-client libpq-dev libncurses5 libreadline-gplv2-dev libncursesw5-dev libssl-dev libsqlite3-dev tk-dev libgdbm-dev libc6-dev libbz2-dev
 {
  apt install fonts-freefont-ttf
 } ||
@@ -447,447 +447,75 @@ EOF
 cat <<EOF > chatapp/fixtures/menu.json
 [
    {
-      "model":"chatapp.menuitem",
+      "model":"chatapp.menu",
       "pk":1,
       "fields":{
-         "menu":2,
-         "seq":1,
-         "option":"1",
-         "message":"Voc\u00ea escolheu a op\u00e7\u00e3o sem acesso. Estamos verificando o acesso.",
-         "input_data":false,
-         "option_menu":null,
-         "updategroup":1,
-         "leave_group":false,
-         "script":5,
-         "group_chat":false,
-         "leave_chat":false,
-         "active":true
+         "description":"Menu Principal",
+         "message":"Bem vindo ao \r\n1 - Suporte\r\n2 - Financeiro\r\n3 - Vendas",
+         "retry":10,
+         "invalid_option_message":"Op\u00e7\u00e3o inv\u00e1lida, favor informar as op\u00e7\u00f5es abaixo.",
+         "default":true
       }
    },
    {
-      "model":"chatapp.menuitem",
+      "model":"chatapp.menu",
       "pk":2,
       "fields":{
-         "menu":2,
-         "seq":2,
-         "option":"2",
-         "message":"Voc\u00ea escolheu a op\u00e7\u00e3o acesso lento. Estamos verificando o uso da sua conex\u00e3o.",
-         "input_data":false,
-         "option_menu":null,
-         "updategroup":null,
-         "leave_group":false,
-         "script":5,
-         "group_chat":false,
-         "leave_chat":false,
-         "active":true
+         "description":"Menu Suporte",
+         "message":"Menu Suporte\r\n1 - Sem acesso\r\n2 - Acesso lento\r\n3 - Problema na abertura de algumas p\u00e1ginas\r\n9 - Encerrar atendimento\r\n0 - Retornar ao menu anterior\r\n# - Falar com atendente.",
+         "message_alt":"Menu Suporte\r\n1 - Sem acesso\r\n2 - Acesso lento\r\n3 - Problema na abertura de algumas p\u00e1ginas\r\n9 - Encerrar atendimento\r\n0 - Retornar ao menu anterior\r",
+         "retry":10,
+         "invalid_option_message":"Op\u00e7\u00e3o inv\u00e1lida, favor digitar uma das op\u00e7\u00f5es abaixo.",
+         "default":false
       }
    },
    {
-      "model":"chatapp.menuitem",
+      "model":"chatapp.menu",
       "pk":3,
       "fields":{
-         "menu":2,
-         "seq":3,
-         "option":"3",
-         "message":"Voc\u00ea informou problemas na abertura de outras p\u00e1ginas. Estamos abrir um chamado...",
-         "input_data":false,
-         "option_menu":null,
-         "updategroup":null,
-         "leave_group":false,
-         "script":3,
-         "group_chat":false,
-         "leave_chat":false,
-         "active":true
+         "description":"Menu Financeiro",
+         "message":"1 - 2\u00aa via do boleto\r\n2 - Promessa de pagamento\r\n3 - Altera\u00e7\u00e3o de vencimento\r\n0 - Retornar menu anterior\r\n9 - Encerrar atendimento\r\n# - Falar com atendente",
+         "message_alt":"1 - 2\u00aa via do boleto\r\n2 - Promessa de pagamento\r\n3 - Altera\u00e7\u00e3o de vencimento\r\n0 - Retornar menu anterior\r\n9 - Encerrar atendimento",
+         "retry":10,
+         "invalid_option_message":"Op\u00e7\u00e3o inv\u00e1lida. Favor informar uma das op\u00e7\u00f5es abaixo.",
+         "default":false
       }
    },
    {
-      "model":"chatapp.menuitem",
+      "model":"chatapp.menu",
       "pk":4,
       "fields":{
-         "menu":2,
-         "seq":1,
-         "option":"0",
-         "message":"",
-         "input_data":false,
-         "option_menu":1,
-         "updategroup":null,
-         "leave_group":false,
-         "script":null,
-         "group_chat":false,
-         "leave_chat":false,
-         "active":true
+         "description":"Identificacao Cliente",
+         "message":"Seja bem-vindo ao . \r\nDigite CPF/CNPJ do assinante.\r\n\r\nSe n\u00e3o for cliente,\r\nDigite 0 para falar com um dos nossos atendentes.\r\nDigite 2 para consultar nossos planos.",
+         "message_alt":"Seja bem-vindo ao . \r\nDigite CPF/CNPJ do assinante.\r\nDigite 2 para consultar nossos planos.\r\nNo momento, estamos fora do horário de atendimento",
+         "retry":10,
+         "invalid_option_message":"",
+         "default":true
       }
    },
    {
-      "model":"chatapp.menuitem",
+      "model":"chatapp.menu",
       "pk":5,
       "fields":{
-         "menu":1,
-         "seq":1,
-         "option":"1",
-         "message":"",
-         "input_data":false,
-         "option_menu":2,
-         "updategroup":1,
-         "leave_group":false,
-         "script":null,
-         "group_chat":false,
-         "leave_chat":false,
-         "active":true
+         "description":"Menu Vendas",
+         "message":"1 - Planos\r\n0 - Retornar menu anterior\r\n# - Falar com atendente.",
+         "message_alt":"1 - Planos\r\n0 - Retornar menu anterior.",
+         "retry":10,
+         "invalid_option_message":"",
+         "default":false
       }
    },
    {
-      "model":"chatapp.menuitem",
-      "pk":6,
-      "fields":{
-         "menu":1,
-         "seq":2,
-         "option":"2",
-         "message":"",
-         "input_data":false,
-         "option_menu":3,
-         "updategroup":2,
-         "leave_group":false,
-         "script":null,
-         "group_chat":false,
-         "leave_chat":false,
-         "active":true
-      }
-   },
-   {
-      "model":"chatapp.menuitem",
-      "pk":7,
-      "fields":{
-         "menu":3,
-         "seq":1,
-         "option":"1",
-         "message":"Estamos consultando 2 via de boleto em aberto. S\u00f3 um momento.",
-         "input_data":false,
-         "option_menu":null,
-         "updategroup":null,
-         "leave_group":false,
-         "script":2,
-         "group_chat":false,
-         "leave_chat":false,
-         "active":true
-      }
-   },
-   {
-      "model":"chatapp.menuitem",
-      "pk":8,
-      "fields":{
-         "menu":3,
-         "seq":2,
-         "option":"2",
-         "message":"Estamos processando a sua requisi\u00e7\u00e3o.",
-         "input_data":false,
-         "option_menu":null,
-         "updategroup":null,
-         "leave_group":false,
-         "script":4,
-         "group_chat":false,
-         "leave_chat":false,
-         "active":true
-      }
-   },
-   {
-      "model":"chatapp.menuitem",
-      "pk":9,
-      "fields":{
-         "menu":3,
-         "seq":10,
-         "option":"0",
-         "message":"",
-         "input_data":false,
-         "option_menu":1,
-         "updategroup":null,
-         "leave_group":false,
-         "script":null,
-         "group_chat":false,
-         "leave_chat":false,
-         "active":true
-      }
-   },
-   {
-      "model":"chatapp.menuitem",
-      "pk":10,
-      "fields":{
-         "menu":3,
-         "seq":99,
-         "option":"#",
-         "message":"Estamos encaminhando solicita\u00e7\u00e3o para setor respons\u00e1vel. Aguarde que iremos atend\u00ea-lo.",
-         "input_data":false,
-         "option_menu":null,
-         "updategroup":2,
-         "leave_group":false,
-         "script":null,
-         "group_chat":true,
-         "leave_chat":false,
-         "active":true,
-         "no_agent":false
-      }
-   },
-   {
-      "model":"chatapp.menuitem",
-      "pk":11,
-      "fields":{
-         "menu":1,
-         "seq":0,
-         "option":"???",
-         "message":"Digite CPF/CNPJ do Assinante.",
-         "input_data":false,
-         "option_menu":2,
-         "updategroup":null,
-         "leave_group":false,
-         "script":null,
-         "group_chat":false,
-         "leave_chat":false,
-         "active":true
-      }
-   },
-   {
-      "model":"chatapp.menuitem",
-      "pk":12,
-      "fields":{
-         "menu":4,
-         "seq":1,
-         "option":"???",
-         "message":"",
-         "input_data":true,
-         "option_menu":1,
-         "updategroup":null,
-         "leave_group":false,
-         "script":1,
-         "group_chat":false,
-         "leave_chat":false,
-         "active":true
-      }
-   },
-   {
-      "model":"chatapp.menuitem",
-      "pk":13,
-      "fields":{
-         "menu":2,
-         "seq":98,
-         "option":"9",
-         "message":"Obrigado por escolher o $PROVEDOR.",
-         "input_data":false,
-         "option_menu":null,
-         "updategroup":null,
-         "leave_group":false,
-         "script":null,
-         "group_chat":false,
-         "leave_chat":true,
-         "active":true
-      }
-   },
-   {
-      "model":"chatapp.menuitem",
-      "pk":14,
-      "fields":{
-         "menu":3,
-         "seq":98,
-         "option":"9",
-         "message":"Obrigado por escolher $PROVEDOR. At\u00e9 a pr\u00f3xima.",
-         "input_data":false,
-         "option_menu":null,
-         "updategroup":null,
-         "leave_group":false,
-         "script":null,
-         "group_chat":false,
-         "leave_chat":true,
-         "active":true
-      }
-   },
-   {
-      "model":"chatapp.menuitem",
-      "pk":15,
-      "fields":{
-         "menu":1,
-         "seq":3,
-         "option":"3",
-         "message":"",
-         "input_data":false,
-         "option_menu":5,
-         "updategroup":3,
-         "leave_group":false,
-         "script":null,
-         "group_chat":false,
-         "leave_chat":false,
-         "active":true
-      }
-   },
-   {
-      "model":"chatapp.menuitem",
-      "pk":16,
-      "fields":{
-         "menu":5,
-         "seq":1,
-         "option":"1",
-         "message":"Plano 50M - 80,00\r\nPlano 60M - 90,00\r\nPlano 100M - 130,00",
-         "input_data":false,
-         "option_menu":null,
-         "updategroup":null,
-         "leave_group":false,
-         "script":null,
-         "group_chat":false,
-         "leave_chat":false,
-         "active":true
-      }
-   },
-   {
-      "model":"chatapp.menuitem",
-      "pk":17,
-      "fields":{
-         "menu":4,
-         "seq":1,
-         "option":"2",
-         "message":"",
-         "input_data":false,
-         "option_menu":6,
-         "updategroup":null,
-         "leave_group":false,
-         "script":null,
-         "group_chat":true,
-         "leave_chat":false,
-         "active":true,
-         "no_agent":false
-      }
-   },
-   {
-      "model":"chatapp.menuitem",
-      "pk":18,
-      "fields":{
-         "menu":4,
-         "seq":1,
-         "option":"0",
-         "message":"Voc\u00ea escolheu falar com um dos nossos atendentes.\nDigite #ajuda para voltar ao menu principal e  escolher outras op\u00e7\u00f5es.",
-         "input_data":false,
-         "option_menu":null,
-         "updategroup":null,
-         "leave_group":false,
-         "script":null,
-         "group_chat":true,
-         "leave_chat":false,
-         "active":true,
-         "no_agent":false
-      }
-   },
-   {
-      "model":"chatapp.menuitem",
-      "pk":19,
-      "fields":{
-         "menu":2,
-         "seq":4,
-         "option":"#",
-         "message":"Estamos encaminhando para atendimento. Se quiser retornar para o menu inicial do atendimento, digite #ajuda",
-         "input_data":false,
-         "option_menu":null,
-         "updategroup":null,
-         "leave_group":false,
-         "script":null,
-         "group_chat":true,
-         "leave_chat":false,
-         "active":true,
-         "no_agent":false
-      }
-   },
-   {
-      "model":"chatapp.menuitem",
-      "pk":20,
-      "fields":{
-         "menu":5,
-         "seq":1,
-         "option":"0",
-         "message":"",
-         "input_data":false,
-         "option_menu":4,
-         "updategroup":null,
-         "leave_group":false,
-         "script":null,
-         "group_chat":false,
-         "leave_chat":false,
-         "active":true
-      }
-   },
-   {
-      "model":"chatapp.menuitem",
-      "pk":21,
-      "fields":{
-         "menu":5,
-         "seq":1,
-         "option":"#",
-         "message":"Estamos encaminhando para o atendimento",
-         "input_data":false,
-         "option_menu":null,
-         "updategroup":3,
-         "leave_group":false,
-         "script":null,
-         "group_chat":true,
-         "leave_chat":false,
-         "active":true,
-         "no_agent":false
-      }
-   },
-   {
-       "model": "chatapp.menuitem",
-       "pk": 24,
-       "fields": {
-           "menu": 6,
-           "seq": 1,
-           "option": "1",
-           "message": "Plano 50M - 80,00\r\nPlano 60M - 90,00\r\nPlano 100M - 130,00",
-           "input_data": false,
-           "image": "",
-           "option_menu": null,
-           "updategroup": 3,
-           "leave_group": false,
-           "script": null,
-           "group_chat": false,
-           "leave_chat": false,
-           "no_agent": true,
-           "active": true
-       }
-   },
-   {
-       "model": "chatapp.menuitem",
-       "pk": 25,
-       "fields": {
-           "menu": 6,
-           "seq": 1,
-           "option": "0",
-           "message": "",
-           "input_data": false,
-           "image": "",
-           "option_menu": 1,
-           "updategroup": null,
-           "leave_group": true,
-           "script": null,
-           "group_chat": false,
-           "leave_chat": false,
-           "no_agent": true,
-           "active": true
-       }
-   },
-   {
-       "model": "chatapp.menuitem",
-       "pk": 26,
-       "fields": {
-           "menu": 6,
-           "seq": 1,
-           "option": "#",
-           "message": "Estamos encaminhando para o atendimento",
-           "input_data": false,
-           "image": "",
-           "option_menu": null,
-           "updategroup": 3,
-           "leave_group": false,
-           "script": null,
-           "group_chat": true,
-           "leave_chat": false,
-           "no_agent": true,
-           "active": true
-       }
+   "model":"chatapp.menu",
+   "pk":6,
+   "fields":{
+      "description":"Menu Vendas",
+      "message":"1 - Planos\r\n0 - Retornar menu anterior\r\n# - Falar com atendente.",
+      "message_alt":"1 - Planos\r\n0 - Retornar menu anterior.",
+      "retry":10,
+      "invalid_option_message":"",
+      "default":false
+   }
    }
 ]
 EOF
