@@ -10,13 +10,13 @@ done
 
 
 cat <<EOF > /etc/apt/sources.list
-deb http://http.us.debian.org/debian/ stretch main
-deb-src http://http.us.debian.org/debian/ stretch main
-deb http://security.debian.org/debian-security stretch/updates main
-deb-src http://security.debian.org/debian-security stretch/updates main
-# stretch-updates, previously known as 'volatile'
-deb http://http.us.debian.org/debian/ stretch-updates main
-deb-src http://http.us.debian.org/debian/ stretch-updates main
+deb http://http.us.debian.org/debian/ buster main
+deb-src http://http.us.debian.org/debian/ buster main
+deb http://security.debian.org/debian-security buster/updates main
+deb-src http://security.debian.org/debian-security buster/updates main
+# buster-updates, previously known as 'volatile'
+deb http://http.us.debian.org/debian/ buster-updates main
+deb-src http://http.us.debian.org/debian/ buster-updates main
 EOF
 
 apt-get update 
@@ -886,15 +886,15 @@ cat <<EOF > chatapp/fixtures/menu.json
 EOF
 
 
-python3.5 manage.py makemigrations
-python3.5 manage.py migrate
-python3.5 manage.py loaddata user
-python3.5 manage.py loaddata source
-python3.5 manage.py loaddata group
-python3.5 manage.py loaddata script
-python3.5 manage.py loaddata menu
-python3.5 manage.py loaddata menuitem
-python3.5 manage.py loaddata filter
+python3.7 manage.py makemigrations
+python3.7 manage.py migrate
+python3.7 manage.py loaddata user
+python3.7 manage.py loaddata source
+python3.7 manage.py loaddata group
+python3.7 manage.py loaddata script
+python3.7 manage.py loaddata menu
+python3.7 manage.py loaddata menuitem
+python3.7 manage.py loaddata filter
 
 
 cat <<EOF > /etc/nginx/sites-enabled/webchat
