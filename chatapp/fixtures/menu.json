@@ -57,5 +57,17 @@
          "invalid_option_message":"",
          "default":false
       }
+   },
+   {
+   "model":"chatapp.menu",
+   "pk":6,
+   "fields":{
+      "description":"Menu Vendas",
+      "message":"1 - Planos\r\n0 - Retornar menu anterior\r\n# - Falar com atendente.",
+      "message_alt":"1 - Planos\r\n0 - Retornar menu anterior.",
+      "retry":10,
+      "invalid_option_message":"",
+      "default":false
+   }
    }
 ]
