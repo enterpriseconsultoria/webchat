@@ -27,7 +27,7 @@ localectl set-locale LANG=pt_BR.UTF-8 LC_CTYPE=pt_BR.UTF-8
 source /etc/default/locale
 export LANG=pt_BR.UTF-8 LC_CTYPE=pt_BR.UTF-8 LC_ALL=pt_BR.UTF-8
 
-apt-get install -y sudo net-tools wget ca-certificates git sqlite bash libmariadb-dev libpq-dev build-essential checkinstall gcc g++ python3-setuptools libmagic-dev libev-dev libgcrypt20-dev libxml2-dev libxslt1-dev libffi-dev fontconfig cython mariadb-client libmariadbclient-dev libdbus-glib-1-2 screen locales-all at nginx postgresql postgresql-client libpq-dev libncurses5 libreadline-gplv2-dev libncursesw5-dev libssl-dev libsqlite3-dev tk-dev libgdbm-dev libc6-dev libbz2-dev
+apt-get install -y sudo net-tools wget ca-certificates git sqlite bash libmariadb-dev libpq-dev build-essential gcc g++ python3-setuptools libmagic-dev libev-dev libgcrypt20-dev libxml2-dev libxslt1-dev libffi-dev fontconfig cython mariadb-client libmariadbclient-dev libdbus-glib-1-2 screen locales-all at nginx postgresql postgresql-client libpq-dev libncurses5 libreadline-gplv2-dev libncursesw5-dev libssl-dev libsqlite3-dev tk-dev libgdbm-dev libc6-dev libbz2-dev
 {
  apt install fonts-freefont-ttf
 } ||
