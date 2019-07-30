@@ -886,11 +886,6 @@ cat <<EOF > chatapp/fixtures/menu.json
 EOF
 
 
-mkdir /usr/local/webchat/chatapp/migrations
-touch /usr/local/webchat/chatapp/migrations/__init__.py
-
-chown -R www-data /usr/local/webchat/
-
 python3.5 manage.py makemigrations
 python3.5 manage.py migrate
 python3.5 manage.py loaddata user
@@ -921,8 +916,8 @@ server {
 }
 EOF
 
-chmod +x /usr/local/webchat/bin/*
-
+chown -R www-data /usr/local/webchat/
+chmod +x /usr/local/webchat/bin/sudo.sh
 
 cp /usr/local/webchat/install/gunicorn_webchat.socket /etc/systemd/system/
 cp /usr/local/webchat/install/gunicorn_webchat.service /etc/systemd/system/
