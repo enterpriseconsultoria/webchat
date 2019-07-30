@@ -40,7 +40,7 @@ echo "www-data    ALL=NOPASSWD: /usr/local/webchat/bin/sudo.sh" > /etc/sudoers.d
 apt install -y python3-pip
 
 
-git clone https://github.com/thiagosm/webchat.git /usr/local/webchat
+git clone -b debian10 --single-branch https://github.com/thiagosm/webchat.git /usr/local/webchat
 
 pip3 install -r /usr/local/webchat/requirements.txt 
 cd /usr/local/webchat/
