@@ -567,7 +567,7 @@ systemctl start gunicorn_webchat.service
 systemctl stop nginx
 systemctl start nginx 
 
-
+chmod +x /usr/local/webchat/bin/*
 cp /usr/local/webchat/install/webchat-cron /etc/cron.d/webchat
 
 
