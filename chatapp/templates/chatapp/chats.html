@@ -71,16 +71,14 @@ var getChars = function() {
 function getLastMessage(){
 
     $.getJSON('{% url "last_message" %}', function( data ) {
-      if(data.last_message_id) {
-        if (data.last_message_id != last_messageall_id) { 
+      if(data.last_message_id || data.last_customer_id) {
+        if (data.last_message_id && data.last_message_id != last_messageall_id) { 
             last_messageall_id = data.last_message_id;
             getChars();
         }
-      }
-      else if (data.last_customer_id){
-        if (data.last_customer_id != last_customer_id) { 
-            last_customer_id = data.last_customer_id;
-            getChars();
+        else if (data.last_customer_id && data.last_customer_id != last_customer_id) { 
+                last_customer_id = data.last_customer_id;
+                getChars();
         }
       }
 
