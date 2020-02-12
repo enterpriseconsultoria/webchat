@@ -144,8 +144,9 @@
 
         
       });
-     
-
+      {% if request.user.is_superuser %}
+        notification = new Audio("/static/sounds/1.mp3");
+      {% endif %}
     });
   </script>
 </body>

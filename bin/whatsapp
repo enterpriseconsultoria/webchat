@@ -1,6 +1,15 @@
 #!/bin/bash
+whatsappgo="/usr/local/webchat/bin/whatsapp.go"
+command="/usr/local/webchat/bin/whatsapp.bin"
+declare -x GOPATH="/usr/local/go-path"
+
+if [ -f "$whatsappgo" ]
+then
+	command="go run $whatsappgo"
+fi
+
 while true
 do
-	/usr/local/webchat/bin/whatsapp.so $@
+	$command $@
 	sleep 5
 done
