@@ -45,6 +45,7 @@
 
 var hasNewChatsTimer;
 var last_messageall_id;
+var last_customer_id;
 clearInterval(hasNewChatsTimer);
 
 if(booting){
@@ -76,8 +77,15 @@ function getLastMessage(){
             getChars();
         }
       }
+      else if (data.last_customer_id){
+        if (data.last_customer_id != last_customer_id) { 
+            last_customer_id = data.last_customer_id;
+            getChars();
+        }
+      }
 
     });
+
   clearInterval(hasNewChatsTimer);
   hasNewChatsTimer = setInterval(function() {
     getLastMessage();
