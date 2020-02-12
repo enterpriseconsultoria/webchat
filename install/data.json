@@ -32,16 +32,6 @@
   }
 },
 {
-  "model": "chatapp.config",
-  "pk": 1,
-  "fields": {
-    "var": "TOKEN",
-    "desc": "Insira o serial",
-    "value": "...",
-    "active": true
-  }
-},
-{
   "model": "chatapp.script",
   "pk": 1,
   "fields": {
