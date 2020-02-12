@@ -1,4 +1,4 @@
-Django==2.1.8
+Django==2.2
 psycopg2-binary
 requests
 typing
@@ -23,5 +23,7 @@ google-cloud-firestore
 vobject
 Pillow==5.4.1
 cython
-
-
+channels
+channels_redis
+redis
+iptools

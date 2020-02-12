@@ -21,7 +21,7 @@
 
 
 <link href='https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,600,700,300' rel='stylesheet' type='text/css'>
-<link href="{% static 'icons/style.css' %}" rel="stylesheet">
+<link href="https://unpkg.com/ionicons@4.2.2/dist/css/ionicons.min.css" rel="stylesheet">
 
 
 <link href="{% static 'others/css/chat.css' %}" rel="stylesheet">
@@ -63,8 +63,7 @@
           <div class="usuario">{{ user }}</div>
         </div>
         <div class="menu">
-          <div class="menu-item" data-href="/admin/auth/user/{{ user.id }}/change/" >Configurações</div>
-          <div class="menu-item" data-href="/chat/vnc" >noVNC</div>
+          <div class="menu-item" data-href="/admin/cauth/user/{{ user.id }}/change/" >Configurações</div>
           <div class="menu-item" data-sair="true" data-href="/admin/logout" >Sair</div>
         </div>
       </div>
