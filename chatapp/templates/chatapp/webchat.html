@@ -15,16 +15,16 @@
 <script src="{% static 'others/js/recorder.min.js' %}" type="text/javascript"></script>
 <script src="{% static 'others/js/capturer.js' %}" type="text/javascript"></script>
 <script src="{% static 'others/js/upload.js' %}" type="text/javascript"></script>
-<script src="{% static 'others/js/chat.js' %}" type="text/javascript"></script>
+<script type="text/javascript" src="{% static 'chatapp/js/consumer.js' %}?version=0.11"></script>
+<script src="{% static 'others/js/chat.js' %}?v=2.1 " type="text/javascript"></script>
 
 <link href="{% static 'others/css/bootstrap.min.css' %}" rel="stylesheet">
 
 
 <link href='https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,600,700,300' rel='stylesheet' type='text/css'>
 <link href="https://unpkg.com/ionicons@4.2.2/dist/css/ionicons.min.css" rel="stylesheet">
-
-<link href="{% static 'others/css/chat.css' %}" rel="stylesheet">
-
+<link href="{% static 'others/css/chat.css' %}?version=2.0" rel="stylesheet">
+<script type="text/javascript"> var static = "{% static '' %}"; var media = "{{MEDIA_URL}}"</script>
 <!--
 <style class="cp-pen-styles">
 {% include "chatapp/chat_layout.css" %}
@@ -120,6 +120,14 @@
     </div>
   </div>
 
+  <div class="alert-dialog" style="display: none">
+    <div class="message">
+      <h2>Não foi possível conectar-se ao servidor!</h2>
+      <p id="retry">
+      </p>
+    </div>  
+  </div>
+
   <script>
 
     $( document ).ready(function() {
@@ -132,5 +140,7 @@
 
     });
   </script>
+
+
 </body>
 </html>
