@@ -1,6 +1,7 @@
 #!/bin/bash
 whatsappgo="/usr/local/webchat/bin/whatsapp.go"
 command="/usr/local/webchat/bin/whatsapp.bin"
+declare -x GOPATH="/usr/local/go-path"
 
 if [ -f "$whatsappgo" ]
 then
