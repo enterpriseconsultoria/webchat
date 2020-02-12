@@ -28,7 +28,7 @@
     "active": true,
     "old": false,
     "old_date": "2022-02-12T10:13:18",
-    "token": 1
+    "token": null
   }
 },
 {
@@ -113,7 +113,7 @@
   "pk": 1,
   "fields": {
     "description": "Menu Principal",
-    "message": "Bem vindo ao \r\n1 - Suporte\r\n2 - Financeiro\r\n3 - Vendas",
+    "message": "Bem vindo ao {PROVEDOR_NAME} \r\n1 - Suporte\r\n2 - Financeiro\r\n3 - Vendas",
     "message_alt": "",
     "retry": 10,
     "invalid_option_message": "Op\u00e7\u00e3o inv\u00e1lida, favor informar as op\u00e7\u00f5es abaixo.",
@@ -509,7 +509,7 @@
     "menu": 2,
     "seq": 98,
     "option": "9",
-    "message": "Obrigado por escolher o .",
+    "message": "Obrigado por escolher {PROVEDOR_NAME} .",
     "input_data": false,
     "image": "",
     "option_menu": null,
@@ -529,7 +529,7 @@
     "menu": 3,
     "seq": 98,
     "option": "9",
-    "message": "Obrigado por escolher . At\u00e9 a pr\u00f3xima.",
+    "message": "Obrigado por escolher {PROVEDOR_NAME}. At\u00e9 a pr\u00f3xima.",
     "input_data": false,
     "image": "",
     "option_menu": null,
@@ -681,5 +681,5 @@
     "no_agent": false,
     "active": true
   }
-},
+}
 ]
