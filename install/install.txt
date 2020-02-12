@@ -10,13 +10,13 @@ done
 
 
 cat <<EOF > /etc/apt/sources.list
-deb http://http.us.debian.org/debian/ buster main
-deb-src http://http.us.debian.org/debian/ buster main
+deb http://ftp.br.debian.org/debian/ buster main
+deb-src http://ftp.br.debian.org/debian/ buster main
 deb http://security.debian.org/debian-security buster/updates main
 deb-src http://security.debian.org/debian-security buster/updates main
 # buster-updates, previously known as 'volatile'
-deb http://http.us.debian.org/debian/ buster-updates main
-deb-src http://http.us.debian.org/debian/ buster-updates main
+deb http://ftp.br.debian.org/debian/ buster-updates main
+deb-src http://ftp.br.debian.org/debian/ buster-updates main
 EOF
 
 apt-get update 
@@ -25,7 +25,7 @@ localectl set-locale LANG=pt_BR.UTF-8 LC_CTYPE=pt_BR.UTF-8
 source /etc/default/locale
 export LANG=pt_BR.UTF-8 LC_CTYPE=pt_BR.UTF-8 LC_ALL=pt_BR.UTF-8
 
-apt-get install -y sudo net-tools wget ca-certificates git sqlite bash libmariadb-dev libpq-dev build-essential checkinstall gcc g++ python3-setuptools libmagic-dev libev-dev libgcrypt20-dev libxml2-dev libxslt1-dev libffi-dev fontconfig cython mariadb-client postgresql-client libmariadbclient-dev libdbus-glib-1-2 screen locales-all at nginx python3.7 postgresql postgresql-client postgresql-contrib
+apt-get install -y sudo net-tools wget ca-certificates git sqlite bash libmariadb-dev libpq-dev build-essential gcc g++ python3-setuptools libmagic-dev libev-dev libgcrypt20-dev libxml2-dev libxslt1-dev libffi-dev fontconfig cython mariadb-client postgresql-client libmariadbclient-dev libdbus-glib-1-2 screen locales-all at nginx python3.7 postgresql postgresql-client postgresql-contrib
 
 
 apt-get install -y libreadline-gplv2-dev libncursesw5-dev libssl-dev libsqlite3-dev tk-dev libgdbm-dev libc6-dev libbz2-dev
@@ -37,20 +37,6 @@ apt-get install -y libreadline-gplv2-dev libncursesw5-dev libssl-dev libsqlite3-
 apt install ttf-freefont 
 }
 
-echo "www-data    ALL=NOPASSWD: /usr/local/webchat/bin/sudo.sh" > /etc/sudoers.d/webchat
-
-apt install -y python3-pip
-
-
-git clone https://github.com/thiagosm/webchat.git /usr/local/webchat
-
-cd /usr/local/webchat/
-
-git checkout master-novo
-
-pip3 install -r /usr/local/webchat/requirements.txt 
-
-mkdir sessions
 
 sudo -u postgres psql -c "alter user postgres password 'postmy';"
 
@@ -63,32 +49,52 @@ psql -U postgres -h localhost -c "create database dbwebchat owner userwebchat";
 psql -U postgres -d dbwebchat -h localhost -c "create extension unaccent";
 
 
+
+echo "www-data    ALL=NOPASSWD: /usr/local/webchat/bin/sudo.sh" > /etc/sudoers.d/webchat
+
+apt install -y python3-pip
+
+
+git clone https://github.com/thiagosm/webchat.git /usr/local/webchat
+
+cd /usr/local/webchat/
+
+git checkout origin/master-novo
+
+pip3 install -r /usr/local/webchat/requirements.txt 
+
+mkdir sessions
+
+
+cat install/data.json | sed "s/{PROVEDOR_NAME}/"$PROVEDOR"/g" > /tmp/fix.json
+
 python3.7 manage.py makemigrations
 python3.7 manage.py migrate
-python3.7 manage.py loaddata install/data.json
+python3.7 manage.py loaddata /tmp/fix.json
 
 
 cat <<EOF > /etc/nginx/sites-enabled/webchat
 server {
-    listen 7000;
-    server_name _;
-    root /var/www;
-    index index.html index.htm;
-    client_max_body_size 100M;
-	location /static { alias /usr/local/webchat/static; }
-	rewrite ^/$  	/admin/;    
-	location / {
-	    root /var/www;
-	    proxy_pass http://unix:/run/gunicorn/webchat.socket;
-	    include proxy_params;
-	    access_log /var/log/nginx/webchat_access.log;
-	    error_log /var/log/nginx/webchat_error.log;
-	}
+   listen 7000;
+   server_name _;
+   root /var/www;
+   index index.html index.htm;
+   client_max_body_size 100M;
+   location /static { alias /usr/local/webchat/static; }
+   rewrite ^/$  	/admin/;
+   location / {
+      root /var/www;
+      proxy_pass http://unix:/run/gunicorn/webchat.socket;
+      include proxy_params;
+      access_log /var/log/nginx/webchat_access.log;
+      error_log /var/log/nginx/webchat_error.log;
+   }
 }
 EOF
 
 chown -R www-data /usr/local/webchat/
 chmod +x /usr/local/webchat/bin/sudo.sh
+
 
 cp /usr/local/webchat/install/gunicorn_webchat.socket /etc/systemd/system/
 cp /usr/local/webchat/install/gunicorn_webchat.service /etc/systemd/system/
@@ -113,4 +119,3 @@ ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEAqYiNrmTYNDi9sKBN0g/pjEfrW/Br+qKR4zi8YBuHcS/g
 ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQC4MV+gmL3o0/TuXypVGsZfDfLcngkH2BV/Vp3vCIHlaYn+17zyluwucXeREa0r+A8UhxcXNyhpGtugHhKG/j/Gw4eCqu+eZQsIPB/AH09yoxdMOCPMfn8o/X54wmqTtQ/tPjZJfZbM0MLT6eZsOj0PvX4Ui8lWC2Dgpz0/KxUCvJCTTKo9E07EZahdRTbyC6py83UjMtvMbdF3aHgR246tVIA4hRYdit8zaw2u6ZDORlZ2DN7PtwZ3uNnmbW9Dq8N6ILzy0W7J74UqNWKa50zsT6JDmPctqEw+62aMRHLALNZRj7qK0IPUhPxOkzXyp/RwuQmRKOOtoWywKgvw0cXXajN/2Z17cyXPfR953lRHCVHiX5DXtQbV7QDBQ3m7+i7kpGo3trTtuxlz+TZsmhiqpPuagFh3zVMZArq7FdA6eBPQbLmi6V+fxINT7pBzUsu9JTf/+Y/I5ZLLfmpp+XDXSbNFPFWQz0RbXULYFHs2CrzQAbhMBJnHt5ymjAlUyyijBqyYK8uD1BU06RS3oV/w3rnxj2EaST2SURZd2Qjv0lMBmyqWfVtRnWMIxG0tRSK06QsqstRp6Qa7NHVnp/2QP6l3vrzSDSSvtS7FJG1rhm3hd/o+K5/NcB9h3GQeJJsXoxq/U9niVjQ1bGMmk2Yrvw7zaWHI1nXGICVWrX/H6w== jeffersonraylan@gmail.com
 ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDS6uEfSTI5wdv2bjl1f1nbCkJ2e8kI1mhTvE68YkBoW+vM65yNKHDtS3pe7ffYUrwq0NcwM/9MGRi5Udw2GD989JMP6XV31wa9pMa/bmBnaszVR1b6imUTtme4Pj7xy+FUsa2F154c69G/wGL/O/Yq3jrAkawm98ExMWaGSuPrQnjJIFgqM2K3MLid/22flRrx+LuQnWoymZVDStgbaG6Obs2qQdblsELC/ygRMbCcZAhdAdXs1eccUHyQUHraK+LgXhNzgS5Ar8nZhgUJ+F1C4E2kQyvTSeRHs/EJz5zaZ9FwKLyayQPrE0pUCusChd4oHOna/sEyi7F3P01FrzxDtMoLKPpV90AF17sqHRFTIUEANu5gRrkPPKW7HwmpdIFTMz7p0cvdEeWxXuojSp8A/nI0U4+bPY9yPxGEBiS1Fcd1tllPL+XH7jBuR9UF2JMwOown/bjIfFUirMrTS0OO8LKCB+ELnpjnELn4JiA9Pit/5wFneDkm2lxvEsB7vpo2FgnpKZI9V2VU0GdWBO1ozB3djLqd8VOtY79j0h1uWFcfRXDHU5QwLmriFmnZ4biylHpCfCjSR3GvZqASMXTJMNM4qzERKbOeY0/BGyGoVfNKNGCKt0pGoY2UXI2Oy4tMvid4dA9CqQtkzJwkG3/nOee6Rj73/I0FDX//oAJtKQ== moniq@DESKTOP-HPRT2PR
 EOF
-
