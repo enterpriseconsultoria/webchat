@@ -62,7 +62,7 @@ cd /usr/local/webchat/
 git checkout origin/master-novo
 
 pip3 install -r /usr/local/webchat/requirements.txt 
-
+pip3 install django
 mkdir sessions
 
 
