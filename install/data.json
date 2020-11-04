@@ -107,7 +107,7 @@
     "message_alt": "",
     "retry": 10,
     "invalid_option_message": "Op\u00e7\u00e3o inv\u00e1lida, favor informar as op\u00e7\u00f5es abaixo.",
-    "default": true
+    "default": false
   }
 },
 {
